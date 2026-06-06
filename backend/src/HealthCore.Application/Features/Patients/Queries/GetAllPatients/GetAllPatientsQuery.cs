@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using HealthCore.Application.Features.Patients.DTOs;
 
-namespace HealthCore.Application.Features.Patients.Queries.GetAllPatients
-{
-    internal class GetAllPatientsQuery
-    {
-    }
-}
+namespace HealthCore.Application.Features.Patients.Queries.GetAllPatients;
+
+public record GetAllPatientsQuery : IRequest<IEnumerable<PatientDto>>;

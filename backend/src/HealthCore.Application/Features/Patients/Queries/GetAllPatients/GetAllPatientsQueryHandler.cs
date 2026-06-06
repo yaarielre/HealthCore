@@ -1,12 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
+using MediatR;
+using HealthCore.Application.Features.Patients.DTOs;
+using HealthCore.Application.Interfaces;
 
-namespace HealthCore.Application.Features.Patients.Queries.GetAllPatients
+namespace HealthCore.Application.Features.Patients.Queries.GetAllPatients;
+
+public class GetAllPatientsQueryHandler : IRequestHandler<GetAllPatientsQuery, IEnumerable<PatientDto>>
 {
-    internal class GetAllPatientsQueryHandler
+    private readonly IPatientRepository _repository;
+    private readonly IMapper _mapper;
+
+    public GetAllPatientsQueryHandler(IPatientRepository repository, IMapper mapper)
     {
+        _repository = repository;
+        _mapper = mapper;
+    }
+
+    public async Task<IEnumerable<PatientDto>> Handle(GetAllPatientsQuery request, CancellationToken cancellationToken)
+    {
+        var patients = await _repository.GetAllAsync();
+        return _mapper.Map<IEnumerable<PatientDto>>(patients);
     }
 }

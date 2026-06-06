@@ -3,9 +3,9 @@ using HealthCore.Application.Features.Patients.DTOs;
 
 namespace HealthCore.Application.Features.Patients.Validators;
 
-public class CreatePatientValidator : AbstractValidator<CreatePatientDto>
+public class UpdatePatientValidator : AbstractValidator<UpdatePatientDto>
 {
-    public CreatePatientValidator()
+    public UpdatePatientValidator()
     {
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage("El nombre es requerido")
@@ -14,15 +14,6 @@ public class CreatePatientValidator : AbstractValidator<CreatePatientDto>
         RuleFor(x => x.LastName)
             .NotEmpty().WithMessage("El apellido es requerido")
             .MaximumLength(100).WithMessage("El apellido no puede exceder 100 caracteres");
-
-        RuleFor(x => x.Cedula)
-            .NotEmpty().WithMessage("La cédula es requerida")
-            .Length(11).WithMessage("La cédula debe tener 11 dígitos")
-            .Matches(@"^\d+$").WithMessage("La cédula solo puede contener números");
-
-        RuleFor(x => x.BirthDate)
-            .NotEmpty().WithMessage("La fecha de nacimiento es requerida")
-            .LessThan(DateTime.UtcNow).WithMessage("La fecha de nacimiento no puede ser en el futuro");
 
         RuleFor(x => x.Phone)
             .NotEmpty().WithMessage("El teléfono es requerido")

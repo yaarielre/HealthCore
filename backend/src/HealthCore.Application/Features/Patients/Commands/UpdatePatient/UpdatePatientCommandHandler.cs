@@ -8,11 +8,13 @@ namespace HealthCore.Application.Features.Patients.Commands.UpdatePatient;
 public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand, PatientDto>
 {
     private readonly IPatientRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public UpdatePatientCommandHandler(IPatientRepository repository, IMapper mapper)
+    public UpdatePatientCommandHandler(IPatientRepository repository, IUnitOfWork unitOfWork, IMapper mapper)
     {
         _repository = repository;
+        _unitOfWork = unitOfWork;
         _mapper = mapper;
     }
 
@@ -25,6 +27,7 @@ public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand,
         patient.UpdateAt = DateTime.UtcNow;
 
         await _repository.UpdateAsync(patient);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
         return _mapper.Map<PatientDto>(patient);
     }

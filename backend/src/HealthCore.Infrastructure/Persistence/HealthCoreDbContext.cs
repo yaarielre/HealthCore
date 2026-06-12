@@ -14,6 +14,12 @@ public class HealthCoreDbContext : DbContext
 
     public DbSet<Doctor> Doctors => Set<Doctor>();
 
+    public DbSet<User> Users => Set<User>();
+
+    public DbSet<UserActivityLog> UserActivityLogs => Set<UserActivityLog>();
+
+    public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
+
     public DbSet<Specialty> Specialties => Set<Specialty>();
 
     public DbSet<Appointment> Appointments => Set<Appointment>();

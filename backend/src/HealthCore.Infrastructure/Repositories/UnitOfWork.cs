@@ -7,9 +7,12 @@ public class UnitOfWork : IUnitOfWork
 {
     private readonly HealthCoreDbContext _context;
 
-    public UnitOfWork(HealthCoreDbContext context)
+    public IUserRepository Users { get; }
+
+    public UnitOfWork(HealthCoreDbContext context, IUserRepository users)
     {
         _context = context;
+        Users = users;
     }
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) =>

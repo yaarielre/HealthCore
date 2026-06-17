@@ -1,15 +1,17 @@
-﻿using HealthCore.Application.Features.Users.Commands.ChangeUserStatus;
+using HealthCore.Application.Features.Users.Commands.ChangeUserStatus;
 using HealthCore.Application.Features.Users.Commands.CreateUser;
 using HealthCore.Application.Features.Users.Commands.UpdateUser;
 using HealthCore.Application.Features.Users.DTOs;
 using HealthCore.Application.Features.Users.Queries.GetAllUsers;
 using HealthCore.Application.Features.Users.Queries.GetUserById;
-using HealthCore.Domain.enums;
+using HealthCore.Domain.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthCore.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class UsersController : ControllerBase

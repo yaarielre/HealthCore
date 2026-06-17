@@ -5,10 +5,12 @@ using HealthCore.Application.Features.Patients.DTOs;
 using HealthCore.Application.Features.Patients.Queries.GetAllPatients;
 using HealthCore.Application.Features.Patients.Queries.GetPatientById;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthCore.API.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class PatientsController : ControllerBase

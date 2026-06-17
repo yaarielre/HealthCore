@@ -21,7 +21,7 @@ public class CreateUserValidator : AbstractValidator<CreateUserDto>
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage("El correo es requerido.")
             .EmailAddress().WithMessage("El correo no tiene un formato válido.")
-            .MaximumLength(150);
+            .MaximumLength(100);
 
         RuleFor(x => x.Phone)
             .MaximumLength(20);

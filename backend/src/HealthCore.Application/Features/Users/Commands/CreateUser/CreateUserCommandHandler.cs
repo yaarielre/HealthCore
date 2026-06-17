@@ -1,8 +1,8 @@
-﻿using AutoMapper;
+using AutoMapper;
 using HealthCore.Application.Features.Users.DTOs;
 using HealthCore.Application.Interfaces;
 using HealthCore.Domain.Entities;
-using HealthCore.Domain.enums;
+using HealthCore.Domain.Enums;
 using MediatR;
 
 namespace HealthCore.Application.Features.Users.Commands.CreateUser;

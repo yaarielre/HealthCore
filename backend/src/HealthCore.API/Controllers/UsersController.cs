@@ -1,6 +1,7 @@
 using HealthCore.Application.Features.Users.Commands.ChangeUserStatus;
 using HealthCore.Application.Features.Users.Commands.CreateUser;
 using HealthCore.Application.Features.Users.Commands.UpdateUser;
+using HealthCore.Application.Features.Users.Commands.ChangePassword;
 using HealthCore.Application.Features.Users.DTOs;
 using HealthCore.Application.Features.Users.Queries.GetAllUsers;
 using HealthCore.Application.Features.Users.Queries.GetUserById;
@@ -56,5 +57,12 @@ public class UsersController : ControllerBase
     {
         var result = await _mediator.Send(new ChangeUserStatusCommand(id, newStatus));
         return Ok(result);
+    }
+
+    [HttpPatch("{id:guid}/password")]
+    public async Task<IActionResult> ChangePassword(Guid id, [FromBody] ChangePasswordDto dto)
+    {
+        await _mediator.Send(new ChangePasswordCommand(id, dto.NewPassword));
+        return Ok();
     }
 }

@@ -1,6 +1,6 @@
 # HealthCore
 
-HealthCore es un proyecto integral en desarrollo, diseñado bajo los principios de **Clean Architecture**. Actualmente, este repositorio contiene la implementación inicial del **Backend**, mientras que el Frontend se integrará en futuras etapas del desarrollo.
+HealthCore es un sistema de gestión clínica integral diseñado bajo los principios de **Clean Architecture** (Backend) y **Clean Code/Modularización** (Frontend). El proyecto incluye un API robusto en .NET 9 y una interfaz de usuario moderna y responsiva en Next.js.
 
 ## 🏗️ Estructura del Proyecto
 
@@ -14,7 +14,20 @@ Desarrollado en **.NET 9** utilizando **C#** y **Entity Framework Core**. Sigue 
 - **`HealthCore.Infrastructure`**: Implementación de acceso a datos (Entity Framework Core), repositorios y servicios externos.
 
 ### Frontend (`/frontend`)
-Desarrollado con **Next.js** (React). Esta capa se encarga de la interfaz de usuario, conectándose con la API del backend para consumir y enviar datos.
+Desarrollado con **Next.js** (React) y **Tailwind CSS**. Implementa una arquitectura modular:
+- **Hooks personalizados** para la lógica de negocio (`useAuth`, `useStaffManagement`, `useSidebar`).
+- **Context API** para estado global (ej. `NotificationContext`).
+- **Sistema de Componentes** atómicos y reutilizables (Sidebar, UI elements, Modales).
+- Integración completa con el backend mediante un cliente de API (`api.ts`).
+
+---
+
+## ✨ Características Actuales
+
+- **Autenticación y Autorización**: Sistema basado en JWT. Diferenciación estricta por roles de usuario (Administrator, Manager, Doctor, Nurse, etc.).
+- **Gestión de Personal Clínico**: Módulo completo para administradores con CRUD de empleados, cambio de estado (activo/inactivo) y restablecimiento de contraseñas.
+- **Sistema de Notificaciones**: Panel interactivo integrado en el dashboard con persistencia local y filtrado inteligente basado en el rol del usuario logueado.
+- **UI/UX Moderna**: Diseño responsivo con menús colapsables, feedback visual (toasts) e interfaces intuitivas para escritorio y móvil.
 
 ---
 
@@ -101,9 +114,10 @@ La aplicación de React/Next.js estará disponible en tu navegador, típicamente
 
 ## 📋 Siguientes Pasos
 
-1. **Conexión Frontend-Backend**: Asegurar que los endpoints del backend se consuman correctamente desde la interfaz en Next.js.
-2. **Autenticación/Autorización**: Implementación de JWT (JSON Web Tokens) u otro método de seguridad.
-3. **Despliegue (Deployment)**: Configuración de CI/CD para producción.
+1. **Gestión de Pacientes**: Implementar el módulo de registro e historial clínico de los pacientes.
+2. **Sistema de Citas Médicas**: Desarrollo del calendario y la asignación de turnos.
+3. **Módulos Clínicos Auxiliares**: Áreas de Laboratorio, Farmacia y Caja.
+4. **Despliegue (Deployment)**: Configuración de CI/CD, dockerización y pase a entorno de producción.
 
 ---
 

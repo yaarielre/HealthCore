@@ -1,4 +1,3 @@
-﻿using HealthCore.Domain.enums;
 using HealthCore.Domain.Enums;
 
 namespace HealthCore.Application.Features.Users.DTOs;

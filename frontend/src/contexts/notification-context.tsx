@@ -3,23 +3,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react"
 import { setNotificationHandler } from "@/lib/notify"
 
-export interface AppNotification {
-  id: string
-  title: string
-  description?: string
-  type: "success" | "error" | "warning" | "info"
-  timestamp: number
-  read: boolean
-  visibleToRoles?: number[]
-}
-
-interface NotificationContextValue {
-  notifications: AppNotification[]
-  addNotification: (n: Omit<AppNotification, "id" | "timestamp" | "read">) => void
-  markAllRead: () => void
-  clearAll: () => void
-  unreadCount: number
-}
+import { AppNotification, NotificationContextValue } from "@/types/notification"
 
 const NotificationContext = createContext<NotificationContextValue | null>(null)
 

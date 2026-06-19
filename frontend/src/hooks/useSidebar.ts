@@ -11,11 +11,7 @@ import {
 } from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
 
-export interface MenuItem {
-  id: string
-  label: string
-  icon: React.ElementType
-}
+import { MenuItem } from "@/types/sidebar"
 
 export function useSidebar() {
   const { user, logout } = useAuth()

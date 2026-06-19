@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Bell, CheckCheck, Trash2, CheckCircle2, XCircle, AlertTriangle, Info } from "lucide-react"
-import { useNotifications, AppNotification } from "@/contexts/notification-context"
+import { useNotifications } from "@/contexts/notification-context"
+import { AppNotification } from "@/types/notification"
 import { useAuth } from "@/hooks/useAuth"
 
 function relativeTime(timestamp: number): string {

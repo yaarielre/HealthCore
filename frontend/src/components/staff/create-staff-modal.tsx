@@ -1,8 +1,9 @@
 "use client"
 
 import { Briefcase, Loader2, Lock, Mail } from "lucide-react"
-import { STAFF_ROLES, StaffFormData } from "@/hooks/useStaffManagement"
-import { UserRole } from "@/services/authService"
+import { STAFF_ROLES } from "@/hooks/useStaffManagement"
+import { StaffFormData } from "@/types/staff"
+import { UserRole } from "@/types/auth"
 
 interface CreateStaffModalProps {
   formData: StaffFormData

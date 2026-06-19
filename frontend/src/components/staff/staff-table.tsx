@@ -1,7 +1,8 @@
 "use client"
 
 import { Briefcase, FileText, Key, Loader2, Mail, Phone, User, UserCheck, UserX } from "lucide-react"
-import { getRoleLabel, StaffMember } from "@/hooks/useStaffManagement"
+import { getRoleLabel } from "@/hooks/useStaffManagement"
+import { StaffMember } from "@/types/staff"
 
 interface StaffTableProps {
   staff: StaffMember[]

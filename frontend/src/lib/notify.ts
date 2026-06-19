@@ -1,5 +1,5 @@
 import { toast } from "sonner"
-import type { AppNotification } from "@/contexts/notification-context"
+import type { AppNotification } from "@/types/notification"
 
 type AddFn = (n: Omit<AppNotification, "id" | "timestamp" | "read">) => void
 

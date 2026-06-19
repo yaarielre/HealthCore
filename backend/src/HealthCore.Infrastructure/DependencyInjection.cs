@@ -20,17 +20,8 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        services.Configure<JwtSettings>(options =>
-        {
-            options.SecretKey = configuration["JwtSettings:SecretKey"] ?? string.Empty;
-            options.Issuer = configuration["JwtSettings:Issuer"] ?? string.Empty;
-            options.Audience = configuration["JwtSettings:Audience"] ?? string.Empty;
-            options.ExpirationInMinutes = int.TryParse(
-                configuration["JwtSettings:ExpirationInMinutes"],
-                out var expirationInMinutes)
-                    ? expirationInMinutes
-                    : 0;
-        });
+
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
         services.AddScoped<IJwtService, JwtService>();
 
         return services;

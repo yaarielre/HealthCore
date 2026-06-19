@@ -1,13 +1,8 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { notify } from "@/lib/notify"
-import { authService, LoginDto, RegisterDto, UserRole } from "@/services/authService"
-
-interface AuthUser {
-  fullName: string
-  email: string
-  role: number
-}
+import { authService } from "@/services/authService"
+import { LoginDto, RegisterDto, AuthUser, UserRole } from "@/types/auth"
 
 export function useAuth() {
   const [loading, setLoading] = useState(false)

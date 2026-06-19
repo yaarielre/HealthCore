@@ -1,7 +1,7 @@
 "use client"
 
 import { Loader2, Lock } from "lucide-react"
-import { PasswordFormData } from "@/hooks/useStaffManagement"
+import { PasswordFormData } from "@/types/staff"
 
 interface ChangePasswordModalProps {
   passwordData: PasswordFormData

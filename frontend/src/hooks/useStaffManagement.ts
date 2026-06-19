@@ -1,18 +1,8 @@
 import { useState, useEffect } from "react"
 import { notify } from "@/lib/notify"
-import { authService, UserRole } from "@/services/authService"
-
-export interface StaffMember {
-  id: string
-  firstName: string
-  lastName: string
-  idNumber: string
-  email: string
-  phone: string
-  role: UserRole
-  status: number
-  doctorId: string | null
-}
+import { authService } from "@/services/authService"
+import { UserRole } from "@/types/auth"
+import { StaffMember, StaffFormData, PasswordFormData } from "@/types/staff"
 
 export const STAFF_ROLES: { value: UserRole; label: string }[] = [
   { value: UserRole.Doctor,       label: "Médico / Doctor" },
@@ -39,13 +29,7 @@ export const EMPTY_FORM = {
   role: UserRole.Doctor as UserRole,
 }
 
-export type StaffFormData = typeof EMPTY_FORM
 
-export interface PasswordFormData {
-  userId: string
-  userName: string
-  newPassword: string
-}
 
 export function useStaffManagement() {
   const [users, setUsers] = useState<StaffMember[]>([])

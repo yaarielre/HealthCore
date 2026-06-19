@@ -1,7 +1,7 @@
 "use client"
 
 import { Search } from "lucide-react"
-import { MenuItem } from "@/hooks/useSidebar"
+import { MenuItem } from "@/types/sidebar"
 
 interface SidebarNavProps {
   collapsed: boolean

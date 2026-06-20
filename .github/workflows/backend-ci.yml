@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - develop
+    paths:
+      - 'backend/**'
+      - 'HealthCore.sln'
   pull_request:
     branches:
       - main
+    paths:
+      - 'backend/**'
+      - 'HealthCore.sln'
 
 jobs:
   build:

@@ -23,17 +23,19 @@ export async function apiRequest<T>(
     }
   }
 
-  const { body, ...rest } = options;
+  const { body, ...restOptions } = options
 
   const config: RequestInit = {
-    ...rest,
+    ...restOptions,
     headers,
-  };
+  }
 
-  if (body instanceof FormData) {
-    config.body = body;
-  } else if (body) {
-    config.body = JSON.stringify(body);
+  if (body) {
+    if (body instanceof FormData) {
+      config.body = body
+    } else {
+      config.body = JSON.stringify(body)
+    }
   }
 
   try {

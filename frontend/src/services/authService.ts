@@ -64,6 +64,12 @@ export const authService = {
     })
   },
 
+  async getLogs(): Promise<import("@/types/log").UserActivityLog[]> {
+    return await apiRequest<import("@/types/log").UserActivityLog[]>("api/Users/logs", {
+      method: "GET"
+    })
+  },
+
   async changePassword(userId: string, newPassword: string): Promise<void> {
     await apiRequest<void>(`api/Users/${userId}/password`, {
       method: "PATCH",

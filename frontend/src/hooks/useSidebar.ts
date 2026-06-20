@@ -27,10 +27,27 @@ export function useSidebar() {
   ]
 
   const visibleMenuItems = menuItems.filter(item => {
-    if (item.id === "staff") {
-      return user?.role === 1 || user?.role === 2
+    const role = user?.role
+
+    switch (item.id) {
+      case "dashboard":
+        return true // Todos pueden ver el dashboard
+      case "patients":
+      case "appointments":
+        // Admin, Manager, Doctor, Enfermera, Recepcionista
+        return role === 1 || role === 2 || role === 3 || role === 4 || role === 5
+      case "records":
+        // Admin, Doctor, Enfermera (privacidad médica)
+        return role === 1 || role === 3 || role === 4
+      case "staff":
+        // Solo Admin y Manager
+        return role === 1 || role === 2
+      case "settings":
+        // Solo Admin
+        return role === 1
+      default:
+        return false
     }
-    return true
   })
 
   function getRoleLabel(roleNum?: number) {

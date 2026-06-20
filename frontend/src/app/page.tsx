@@ -17,6 +17,9 @@ import {
 import { LoginForm } from "@/components/login-form"
 import { Sidebar } from "@/components/sidebar"
 import { DoctorManagement } from "@/components/doctor-management"
+import { PatientManagement } from "@/components/patient-management"
+import { AppointmentManagement } from "@/components/appointment-management"
+import { SettingsManagement } from "@/components/settings-management"
 import { NotificationBell } from "@/components/notification-bell"
 import { NotificationProvider } from "@/contexts/notification-context"
 import { useAuth } from "@/hooks/useAuth"
@@ -260,7 +263,43 @@ export default function Page() {
             )
           )}
 
-          {activeTab !== "dashboard" && activeTab !== "staff" && (
+          {activeTab === "patients" && (
+            [1, 2, 3, 4, 5].includes(user?.role || 0) ? (
+              <PatientManagement />
+            ) : (
+              <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
+                <span className="flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                  <ShieldCheck className="size-7" />
+                </span>
+                <h3 className="mt-4 font-semibold text-foreground text-base">Acceso Denegado</h3>
+                <p className="mt-2 text-sm text-muted-foreground max-w-sm">
+                  Tu rol no tiene permisos para acceder a los datos de pacientes.
+                </p>
+              </div>
+            )
+          )}
+
+          {activeTab === "appointments" && (
+            [1, 2, 3, 4, 5].includes(user?.role || 0) ? (
+              <AppointmentManagement />
+            ) : (
+              <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
+                <span className="flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                  <ShieldCheck className="size-7" />
+                </span>
+                <h3 className="mt-4 font-semibold text-foreground text-base">Acceso Denegado</h3>
+                <p className="mt-2 text-sm text-muted-foreground max-w-sm">
+                  Tu rol no tiene permisos para acceder a las citas médicas.
+                </p>
+              </div>
+            )
+          )}
+
+          {activeTab === "settings" && (
+            <SettingsManagement />
+          )}
+
+          {activeTab !== "dashboard" && activeTab !== "staff" && activeTab !== "patients" && activeTab !== "appointments" && activeTab !== "settings" && (
             <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
               <span className="flex size-14 items-center justify-center rounded-full bg-accent/10 text-accent">
                 <Users className="size-7" />

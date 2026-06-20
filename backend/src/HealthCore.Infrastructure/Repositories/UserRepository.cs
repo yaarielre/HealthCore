@@ -1,4 +1,4 @@
-﻿using HealthCore.Application.Interfaces;
+using HealthCore.Application.Interfaces;
 using HealthCore.Domain.Entities;
 using HealthCore.Domain.Enums;
 using HealthCore.Infrastructure.Persistence;
@@ -8,7 +8,12 @@ namespace HealthCore.Infrastructure.Repositories;
 
 public class UserRepository : GenericRepository<User>, IUserRepository
 {
-    public UserRepository(HealthCoreDbContext context) : base(context) { }
+    private readonly HealthCoreDbContext _dbContext;
+
+    public UserRepository(HealthCoreDbContext context) : base(context) 
+    { 
+        _dbContext = context;
+    }
 
     public async Task<User?> GetByEmailAsync(string email) =>
         await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
@@ -21,4 +26,11 @@ public class UserRepository : GenericRepository<User>, IUserRepository
 
     public async Task<bool> EmailExistsAsync(string email) =>
         await _dbSet.AnyAsync(u => u.Email == email);
+
+    public async Task<IEnumerable<UserActivityLog>> GetLogsAsync() =>
+        await _dbContext.UserActivityLogs
+            .Include(l => l.User)
+            .OrderByDescending(l => l.CreatedAt)
+            .Take(100)
+            .ToListAsync();
 }

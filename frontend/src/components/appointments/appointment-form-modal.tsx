@@ -3,11 +3,13 @@
 import { Loader2, X } from "lucide-react"
 import { AppointmentFormData } from "@/types/appointment"
 import { Patient } from "@/types/patient"
+import { StaffMember } from "@/types/staff"
 
 interface AppointmentFormModalProps {
   mode: "create" | "edit"
   formData: AppointmentFormData
   patients: Patient[]
+  doctors: StaffMember[]
   isLoading: boolean
   onClose: () => void
   onSubmit: (e: React.FormEvent) => void
@@ -18,6 +20,7 @@ export function AppointmentFormModal({
   mode,
   formData,
   patients,
+  doctors,
   isLoading,
   onClose,
   onSubmit,
@@ -63,16 +66,20 @@ export function AppointmentFormModal({
 
           {isCreate && (
             <div className="flex flex-col gap-1.5">
-              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Doctor ID</label>
-              <input
-                type="text"
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Doctor Asignado</label>
+              <select
                 value={formData.doctorId}
-                placeholder="ej. UUID del doctor asignado"
                 onChange={(e) => update("doctorId", e.target.value)}
                 required
-                autoComplete="off"
-                className="rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/50"
-              />
+                className="rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50"
+              >
+                <option value="">Selecciona un doctor...</option>
+                {doctors.map((d) => (
+                  <option key={d.id} value={d.doctorId || d.id}>
+                    Dr(a). {d.firstName} {d.lastName}
+                  </option>
+                ))}
+              </select>
             </div>
           )}
 

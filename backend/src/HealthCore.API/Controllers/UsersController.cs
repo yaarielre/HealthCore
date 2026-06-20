@@ -5,6 +5,7 @@ using HealthCore.Application.Features.Users.Commands.ChangePassword;
 using HealthCore.Application.Features.Users.DTOs;
 using HealthCore.Application.Features.Users.Queries.GetAllUsers;
 using HealthCore.Application.Features.Users.Queries.GetUserById;
+using HealthCore.Application.Features.Users.Queries.GetAllLogs;
 using HealthCore.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -28,6 +29,13 @@ public class UsersController : ControllerBase
     public async Task<IActionResult> GetAll()
     {
         var result = await _mediator.Send(new GetAllUsersQuery());
+        return Ok(result);
+    }
+
+    [HttpGet("logs")]
+    public async Task<IActionResult> GetAllLogs()
+    {
+        var result = await _mediator.Send(new GetAllLogsQuery());
         return Ok(result);
     }
 

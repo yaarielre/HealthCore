@@ -9,6 +9,7 @@ import { ChangeStatusModal } from "./appointments/change-status-modal"
 export function AppointmentManagement() {
   const {
     patients,
+    doctors,
     filteredAppointments,
     isLoading,
     isSubmitLoading,
@@ -58,6 +59,7 @@ export function AppointmentManagement() {
           mode="create"
           formData={formData}
           patients={patients}
+          doctors={doctors}
           isLoading={isSubmitLoading}
           onClose={() => setIsCreateOpen(false)}
           onSubmit={handleCreate}
@@ -70,6 +72,7 @@ export function AppointmentManagement() {
           mode="edit"
           formData={formData}
           patients={patients}
+          doctors={doctors}
           isLoading={isSubmitLoading}
           onClose={() => setIsEditOpen(false)}
           onSubmit={handleEdit}

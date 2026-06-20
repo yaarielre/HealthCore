@@ -1,9 +1,12 @@
 import { useState, useEffect, useCallback } from "react"
 import { appointmentService } from "@/services/appointmentService"
 import { patientService } from "@/services/patientService"
+import { authService } from "@/services/authService"
 import { notify } from "@/lib/notify"
 import { Appointment, AppointmentFormData, AppointmentStatus } from "@/types/appointment"
 import { Patient } from "@/types/patient"
+import { StaffMember } from "@/types/staff"
+import { UserRole } from "@/types/auth"
 
 export const EMPTY_APPOINTMENT_FORM: AppointmentFormData = {
   patientId: "",
@@ -16,6 +19,7 @@ export const EMPTY_APPOINTMENT_FORM: AppointmentFormData = {
 export function useAppointments() {
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [patients, setPatients] = useState<Patient[]>([])
+  const [doctors, setDoctors] = useState<StaffMember[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [isSubmitLoading, setIsSubmitLoading] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -49,10 +53,21 @@ export function useAppointments() {
     }
   }, [])
 
+  const fetchDoctors = useCallback(async () => {
+    try {
+      const users = await authService.getUsers() as StaffMember[]
+      const onlyDoctors = users.filter((u) => u.role === UserRole.Doctor)
+      setDoctors(onlyDoctors)
+    } catch {
+      // silently fail
+    }
+  }, [])
+
   useEffect(() => {
     fetchAppointments()
     fetchPatients()
-  }, [fetchAppointments, fetchPatients])
+    fetchDoctors()
+  }, [fetchAppointments, fetchPatients, fetchDoctors])
 
   const filteredAppointments = appointments.filter((a) => {
     const query = searchQuery.toLowerCase()
@@ -149,6 +164,7 @@ export function useAppointments() {
   return {
     appointments,
     patients,
+    doctors,
     filteredAppointments,
     isLoading,
     isSubmitLoading,

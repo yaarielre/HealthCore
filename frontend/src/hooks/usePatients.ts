@@ -156,5 +156,6 @@ export function usePatients() {
     handleCreate,
     handleEdit,
     handleDelete,
+    fetchPatients,
   }
 }

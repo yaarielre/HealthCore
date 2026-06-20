@@ -56,7 +56,8 @@ export function NotificationBell() {
 
   const visible = notifications.filter((n) => {
     if (!n.visibleToRoles || n.visibleToRoles.length === 0) return true
-    return n.visibleToRoles.includes(user?.role)
+    if (!user || user.role === undefined) return false
+    return n.visibleToRoles.includes(user.role)
   })
 
   const visibleUnread = visible.filter((n) => !n.read).length

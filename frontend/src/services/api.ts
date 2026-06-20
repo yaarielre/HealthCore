@@ -20,13 +20,19 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
     }
   }
 
+  const { body, ...restOptions } = options
+
   const config: RequestInit = {
-    ...options,
+    ...restOptions,
     headers,
   }
 
-  if (options.body && !(options.body instanceof FormData)) {
-    config.body = JSON.stringify(options.body)
+  if (body) {
+    if (body instanceof FormData) {
+      config.body = body
+    } else {
+      config.body = JSON.stringify(body)
+    }
   }
 
   try {

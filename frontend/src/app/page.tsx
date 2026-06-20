@@ -17,6 +17,7 @@ import {
 import { LoginForm } from "@/components/login-form"
 import { Sidebar } from "@/components/sidebar"
 import { DoctorManagement } from "@/components/doctor-management"
+import { PatientManagement } from "@/components/patient-management"
 import { NotificationBell } from "@/components/notification-bell"
 import { NotificationProvider } from "@/contexts/notification-context"
 import { useAuth } from "@/hooks/useAuth"
@@ -260,7 +261,11 @@ export default function Page() {
             )
           )}
 
-          {activeTab !== "dashboard" && activeTab !== "staff" && (
+          {activeTab === "patients" && (
+            <PatientManagement />
+          )}
+
+          {activeTab !== "dashboard" && activeTab !== "staff" && activeTab !== "patients" && (
             <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
               <span className="flex size-14 items-center justify-center rounded-full bg-accent/10 text-accent">
                 <Users className="size-7" />

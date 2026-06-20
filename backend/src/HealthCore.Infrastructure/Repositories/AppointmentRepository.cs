@@ -10,6 +10,18 @@ public class AppointmentRepository : GenericRepository<Appointment>, IAppointmen
 {
     public AppointmentRepository(HealthCoreDbContext context) : base(context) { }
 
+    public override async Task<IEnumerable<Appointment>> GetAllAsync() =>
+        await _dbSet
+            .Include(a => a.Patient)
+            .Include(a => a.Doctor)
+            .ToListAsync();
+
+    public override async Task<Appointment?> GetByIdAsync(Guid id) =>
+        await _dbSet
+            .Include(a => a.Patient)
+            .Include(a => a.Doctor)
+            .FirstOrDefaultAsync(a => a.Id == id);
+
     public async Task<IEnumerable<Appointment>> GetByDoctorIdAsync(Guid doctorId) =>
         await _dbSet
             .Include(a => a.Patient)

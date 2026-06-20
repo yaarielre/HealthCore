@@ -1,22 +1,25 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7011"
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7011";
 
 interface RequestOptions extends Omit<RequestInit, "body"> {
-  body?: unknown
+  body?: unknown;
 }
 
-export async function apiRequest<T>(endpoint: string, options: RequestOptions = {}): Promise<T> {
-  const url = `${BASE_URL.replace(/\/$/, "")}/${endpoint.replace(/^\//, "")}`
+export async function apiRequest<T>(
+  endpoint: string,
+  options: RequestOptions = {},
+): Promise<T> {
+  const url = `${BASE_URL.replace(/\/$/, "")}/${endpoint.replace(/^\//, "")}`;
 
-  const headers = new Headers(options.headers)
-  
+  const headers = new Headers(options.headers);
+
   if (!headers.has("Content-Type") && !(options.body instanceof FormData)) {
-    headers.set("Content-Type", "application/json")
+    headers.set("Content-Type", "application/json");
   }
 
   if (typeof window !== "undefined") {
-    const token = localStorage.getItem("healthcore_token")
+    const token = localStorage.getItem("healthcore_token");
     if (token) {
-      headers.set("Authorization", `Bearer ${token}`)
+      headers.set("Authorization", `Bearer ${token}`);
     }
   }
 
@@ -36,26 +39,26 @@ export async function apiRequest<T>(endpoint: string, options: RequestOptions = 
   }
 
   try {
-    const response = await fetch(url, config)
+    const response = await fetch(url, config);
 
     if (!response.ok) {
-      let errorMessage = "Ocurrió un error inesperado"
+      let errorMessage = "Ocurrió un error inesperado";
       try {
-        const errorData = await response.json()
-        errorMessage = errorData.message || errorData.Message || errorMessage
+        const errorData = await response.json();
+        errorMessage = errorData.message || errorData.Message || errorMessage;
       } catch {
-        errorMessage = response.statusText || errorMessage
+        errorMessage = response.statusText || errorMessage;
       }
-      throw new Error(errorMessage)
+      throw new Error(errorMessage);
     }
 
     if (response.status === 204) {
-      return {} as T
+      return {} as T;
     }
 
-    return await response.json() as T
+    return (await response.json()) as T;
   } catch (error: unknown) {
-    console.error(`Error en la petición API [${url}]:`, error)
-    throw error
+    console.error(`Error en la petición API [${url}]:`, error);
+    throw error;
   }
 }

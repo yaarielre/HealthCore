@@ -8,6 +8,9 @@ export interface AppNotification {
   visibleToRoles?: number[]
 }
 
+
+// Notification
+
 export interface NotificationContextValue {
   notifications: AppNotification[]
   addNotification: (n: Omit<AppNotification, "id" | "timestamp" | "read">) => void

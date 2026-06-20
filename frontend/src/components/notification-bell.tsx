@@ -54,10 +54,12 @@ export function NotificationBell() {
   const [isOpen, setIsOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
-  const visible = notifications.filter((n) => {
-    if (!n.visibleToRoles || n.visibleToRoles.length === 0) return true
-    return n.visibleToRoles.includes(user?.role)
-  })
+const visible = notifications.filter((n) => {
+  if (!n.visibleToRoles || n.visibleToRoles.length === 0) return true
+  if (!user?.role) return false
+  return n.visibleToRoles.includes(user.role)
+})
+
 
   const visibleUnread = visible.filter((n) => !n.read).length
 

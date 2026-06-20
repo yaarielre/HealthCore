@@ -1,0 +1,111 @@
+diff --git a/backend/src/HealthCore.API/Program.cs b/backend/src/HealthCore.API/Program.cs
+index 2549474..99a0daf 100644
+--- a/backend/src/HealthCore.API/Program.cs
++++ b/backend/src/HealthCore.API/Program.cs
+@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
+ using Microsoft.IdentityModel.Tokens;
+ using System.Text;
+ 
++using HealthCore.API.Middleware;
++
+ var builder = WebApplication.CreateBuilder(args);
+ 
+ builder.Services.AddControllers();
+@@ -46,7 +48,8 @@ if (app.Environment.IsDevelopment())
+ }
+ 
+ app.UseHttpsRedirection();
++app.UseMiddleware<ExceptionHandlingMiddleware>();
+ app.UseAuthentication(); // ← antes de Authorization
+ app.UseAuthorization();
+ app.MapControllers();
+-app.Run();
+\ No newline at end of file
++app.Run();
+diff --git a/backend/src/HealthCore.Infrastructure/DependencyInjection.cs b/backend/src/HealthCore.Infrastructure/DependencyInjection.cs
+index 52a35bb..25923ad 100644
+--- a/backend/src/HealthCore.Infrastructure/DependencyInjection.cs
++++ b/backend/src/HealthCore.Infrastructure/DependencyInjection.cs
+@@ -20,19 +20,10 @@ public static class DependencyInjection
+         services.AddScoped<IUserRepository, UserRepository>();
+         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+         services.AddScoped<IUnitOfWork, UnitOfWork>();
+-        services.Configure<JwtSettings>(options =>
+-        {
+-            options.SecretKey = configuration["JwtSettings:SecretKey"] ?? string.Empty;
+-            options.Issuer = configuration["JwtSettings:Issuer"] ?? string.Empty;
+-            options.Audience = configuration["JwtSettings:Audience"] ?? string.Empty;
+-            options.ExpirationInMinutes = int.TryParse(
+-                configuration["JwtSettings:ExpirationInMinutes"],
+-                out var expirationInMinutes)
+-                    ? expirationInMinutes
+-                    : 0;
+-        });
++
++        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+         services.AddScoped<IJwtService, JwtService>();
+ 
+         return services;
+     }
+-}
++}
+\ No newline at end of file
+diff --git a/backend/src/HealthCore.Infrastructure/HealthCore.Infrastructure.csproj b/backend/src/HealthCore.Infrastructure/HealthCore.Infrastructure.csproj
+index 755278f..396eb97 100644
+--- a/backend/src/HealthCore.Infrastructure/HealthCore.Infrastructure.csproj
++++ b/backend/src/HealthCore.Infrastructure/HealthCore.Infrastructure.csproj
+@@ -13,6 +13,7 @@
+       <PrivateAssets>all</PrivateAssets>
+     </PackageReference>
+     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.15" />
++    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.9" />
+     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
+   </ItemGroup>
+ 
+diff --git a/backend/src/HealthCore.Infrastructure/Repositories/AppointmentRepository.cs b/backend/src/HealthCore.Infrastructure/Repositories/AppointmentRepository.cs
+index 57e5d1c..ace3121 100644
+--- a/backend/src/HealthCore.Infrastructure/Repositories/AppointmentRepository.cs
++++ b/backend/src/HealthCore.Infrastructure/Repositories/AppointmentRepository.cs
+@@ -10,6 +10,18 @@ public class AppointmentRepository : GenericRepository<Appointment>, IAppointmen
+ {
+     public AppointmentRepository(HealthCoreDbContext context) : base(context) { }
+ 
++    public override async Task<IEnumerable<Appointment>> GetAllAsync() =>
++        await _dbSet
++            .Include(a => a.Patient)
++            .Include(a => a.Doctor)
++            .ToListAsync();
++
++    public override async Task<Appointment?> GetByIdAsync(Guid id) =>
++        await _dbSet
++            .Include(a => a.Patient)
++            .Include(a => a.Doctor)
++            .FirstOrDefaultAsync(a => a.Id == id);
++
+     public async Task<IEnumerable<Appointment>> GetByDoctorIdAsync(Guid doctorId) =>
+         await _dbSet
+             .Include(a => a.Patient)
+@@ -48,4 +60,4 @@ public class AppointmentRepository : GenericRepository<Appointment>, IAppointmen
+             a.AppointmentDate > start &&
+             a.AppointmentDate < end);
+     }
+-}
++}
+\ No newline at end of file
+diff --git a/backend/src/HealthCore.Infrastructure/Repositories/GenericRepository.cs b/backend/src/HealthCore.Infrastructure/Repositories/GenericRepository.cs
+index 0a756f2..f831246 100644
+--- a/backend/src/HealthCore.Infrastructure/Repositories/GenericRepository.cs
++++ b/backend/src/HealthCore.Infrastructure/Repositories/GenericRepository.cs
+@@ -15,10 +15,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
+         _dbSet = context.Set<T>();
+     }
+ 
+-    public async Task<T?> GetByIdAsync(Guid id) =>
++    public virtual async Task<T?> GetByIdAsync(Guid id) =>
+         await _dbSet.FindAsync(id);
+ 
+-    public async Task<IEnumerable<T>> GetAllAsync() =>
++    public virtual async Task<IEnumerable<T>> GetAllAsync() =>
+         await _dbSet.ToListAsync();
+ 
+     public async Task AddAsync(T entity) =>

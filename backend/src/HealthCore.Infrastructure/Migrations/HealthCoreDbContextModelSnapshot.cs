@@ -94,6 +94,8 @@ namespace HealthCore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("SpecialtyId");
+
                     b.ToTable("Doctors");
                 });
 
@@ -182,8 +184,10 @@ namespace HealthCore.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -244,7 +248,9 @@ namespace HealthCore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DoctorId");
+                    b.HasIndex("DoctorId")
+                        .IsUnique()
+                        .HasFilter("[DoctorId] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -288,7 +294,7 @@ namespace HealthCore.Infrastructure.Migrations
             modelBuilder.Entity("HealthCore.Domain.Entities.Appointment", b =>
                 {
                     b.HasOne("HealthCore.Domain.Entities.Doctor", "Doctor")
-                        .WithMany()
+                        .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -302,6 +308,17 @@ namespace HealthCore.Infrastructure.Migrations
                     b.Navigation("Doctor");
 
                     b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Doctor", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.Specialty", "Specialty")
+                        .WithMany("Doctors")
+                        .HasForeignKey("SpecialtyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Specialty");
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Entities.PasswordResetToken", b =>
@@ -318,8 +335,8 @@ namespace HealthCore.Infrastructure.Migrations
             modelBuilder.Entity("HealthCore.Domain.Entities.User", b =>
                 {
                     b.HasOne("HealthCore.Domain.Entities.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId");
+                        .WithOne("User")
+                        .HasForeignKey("HealthCore.Domain.Entities.User", "DoctorId");
 
                     b.Navigation("Doctor");
                 });
@@ -333,6 +350,18 @@ namespace HealthCore.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Doctor", b =>
+                {
+                    b.Navigation("Appointments");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Specialty", b =>
+                {
+                    b.Navigation("Doctors");
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Entities.User", b =>

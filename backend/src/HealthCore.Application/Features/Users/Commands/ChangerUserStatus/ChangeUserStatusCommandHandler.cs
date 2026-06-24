@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using HealthCore.Application.Interfaces;
+using HealthCore.Domain.Interfaces;
 
 namespace HealthCore.Application.Features.Users.Commands.ChangeUserStatus;
 

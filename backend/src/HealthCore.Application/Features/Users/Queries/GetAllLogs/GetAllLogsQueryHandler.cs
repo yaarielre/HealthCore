@@ -1,5 +1,5 @@
 using HealthCore.Application.Features.Users.DTOs;
-using HealthCore.Application.Interfaces;
+using HealthCore.Domain.Interfaces;
 using MediatR;
 
 namespace HealthCore.Application.Features.Users.Queries.GetAllLogs;

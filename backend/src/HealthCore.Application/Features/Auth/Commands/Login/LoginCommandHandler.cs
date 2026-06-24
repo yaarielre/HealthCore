@@ -1,9 +1,10 @@
 using MediatR;
 using HealthCore.Application.Features.Auth.DTOs;
-using HealthCore.Application.Interfaces;
+using HealthCore.Domain.Interfaces;
 using HealthCore.Application.Settings;
 using HealthCore.Domain.Enums;
 using Microsoft.Extensions.Options;
+using HealthCore.Application.Interfaces;
 
 namespace HealthCore.Application.Features.Auth.Commands.Login;
 

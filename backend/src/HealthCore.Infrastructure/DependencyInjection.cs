@@ -1,4 +1,4 @@
-using HealthCore.Application.Interfaces;
+using HealthCore.Domain.Interfaces;
 using HealthCore.Application.Settings;
 using HealthCore.Infrastructure.Persistence;
 using HealthCore.Infrastructure.Repositories;
@@ -6,6 +6,7 @@ using HealthCore.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using HealthCore.Application.Interfaces;
 
 namespace HealthCore.Infrastructure;
 

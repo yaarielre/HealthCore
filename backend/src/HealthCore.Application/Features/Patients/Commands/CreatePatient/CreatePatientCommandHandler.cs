@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using HealthCore.Application.Features.Patients.DTOs;
-using HealthCore.Application.Interfaces;
+using HealthCore.Domain.Interfaces;
 using HealthCore.Domain.Entities;
 
 namespace HealthCore.Application.Features.Patients.Commands.CreatePatient;

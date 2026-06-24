@@ -1,6 +1,8 @@
+using System.Threading.RateLimiting;
 using HealthCore.Application;
 using HealthCore.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using HealthCore.API.Middleware;
@@ -42,8 +44,37 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowFrontend", policy =>
     {
         policy.WithOrigins("http://localhost:3000")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowCredentials()
+              .WithHeaders("Authorization", "Content-Type")
+              .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE");
+    });
+
+    options.AddPolicy("Production", policy =>
+    {
+        policy.WithOrigins(
+            builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [])
+              .AllowCredentials()
+              .WithHeaders("Authorization", "Content-Type")
+              .WithMethods("GET", "POST", "PUT", "PATCH", "DELETE");
+    });
+});
+
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    options.AddFixedWindowLimiter("LoginPolicy", config =>
+    {
+        config.PermitLimit = 5;
+        config.Window = TimeSpan.FromMinutes(1);
+        config.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+        config.QueueLimit = 0;
+    });
+
+    options.AddFixedWindowLimiter("GlobalPolicy", config =>
+    {
+        config.PermitLimit = 100;
+        config.Window = TimeSpan.FromMinutes(1);
     });
 });
 
@@ -62,7 +93,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
-app.UseCors("AllowFrontend");
+app.UseCors(app.Environment.IsDevelopment() ? "AllowFrontend" : "Production");
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 

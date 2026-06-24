@@ -32,6 +32,7 @@ public class DoctorsController : ControllerBase
     public async Task<ActionResult<IEnumerable<DoctorDto>>> GetBySpecialty(Guid specialtyId)
         => Ok(await _mediator.Send(new GetDoctorsBySpecialtyQuery(specialtyId)));
 
+    [Authorize(Roles = "Administrator,Manager")]
     [HttpPost]
     public async Task<ActionResult<DoctorDto>> Create(CreateDoctorDto dto)
     {
@@ -40,11 +41,13 @@ public class DoctorsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
+    [Authorize(Roles = "Administrator,Manager")]
     [HttpPut("{id}")]
     public async Task<ActionResult<DoctorDto>> Update(Guid id, UpdateDoctorDto dto)
         => Ok(await _mediator.Send(new UpdateDoctorCommand(
             id, dto.FirstName, dto.LastName, dto.LicenseNumber, dto.SpecialtyId)));
 
+    [Authorize(Roles = "Administrator,Manager")]
     [HttpPatch("{id}/toggle-status")]
     public async Task<ActionResult<bool>> ToggleStatus(Guid id)
         => Ok(await _mediator.Send(new ToggleDoctorStatusCommand(id)));

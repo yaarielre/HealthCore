@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HealthCore.API.Middleware;
@@ -5,10 +6,12 @@ namespace HealthCore.API.Middleware;
 public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionHandlingMiddleware> _logger;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next)
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -19,6 +22,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception exception)
         {
+            _logger.LogError(exception, "Ocurrió una excepción no controlada en {Path}", context.Request.Path);
             await HandleExceptionAsync(context, exception);
         }
     }
@@ -27,6 +31,8 @@ public class ExceptionHandlingMiddleware
     {
         var (statusCode, title) = exception switch
         {
+            ValidationException => (StatusCodes.Status400BadRequest, "Error de validación"),
+            ApplicationException => (StatusCodes.Status409Conflict, "Conflicto"),
             InvalidOperationException => (StatusCodes.Status409Conflict, "Conflicto"),
             KeyNotFoundException => (StatusCodes.Status404NotFound, "No encontrado"),
             UnauthorizedAccessException => (StatusCodes.Status401Unauthorized, "No autorizado"),

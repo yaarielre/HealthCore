@@ -36,6 +36,7 @@ public class PatientsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Administrator,Receptionist")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreatePatientDto dto)
     {
@@ -43,6 +44,7 @@ public class PatientsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
+    [Authorize(Roles = "Administrator,Receptionist")]
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePatientDto dto)
     {
@@ -50,6 +52,7 @@ public class PatientsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Administrator,Receptionist")]
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {

@@ -6,7 +6,6 @@ public record UserDto(
     Guid Id,
     string FirstName,
     string LastName,
-    string IdNumber,
     string Email,
     string Phone,
     UserRole Role,
@@ -21,7 +20,8 @@ public record CreateUserDto(
     string Email,
     string Phone,
     UserRole Role,
-    Guid? DoctorId
+    Guid? DoctorId,
+    string Password
 );
 
 public record UpdateUserDto(

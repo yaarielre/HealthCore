@@ -3,6 +3,7 @@ using HealthCore.Application.Features.Auth.Commands.Register;
 using HealthCore.Application.Features.Auth.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 
 namespace HealthCore.API.Controllers;
 
@@ -18,6 +19,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
+    [EnableRateLimiting("LoginPolicy")]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
         var result = await _mediator.Send(new LoginCommand(dto));

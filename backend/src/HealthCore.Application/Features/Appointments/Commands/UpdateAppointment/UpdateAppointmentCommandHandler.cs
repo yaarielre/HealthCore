@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using HealthCore.Application.Features.Appointment.Commands.UpdateAppointment;
+using HealthCore.Application.Features.Appointments.Commands.UpdateAppointment;
 using HealthCore.Application.Features.Appointments.DTOs;
 using HealthCore.Domain.Interfaces;
 using MediatR;

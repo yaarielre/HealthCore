@@ -23,4 +23,11 @@ public class HealthCoreDbContext : DbContext
     public DbSet<Specialty> Specialties => Set<Specialty>();
 
     public DbSet<Appointment> Appointments => Set<Appointment>();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(HealthCoreDbContext).Assembly);
+
+        modelBuilder.Entity<Patient>().HasQueryFilter(p => !p.IsDeleted);
+    }
 }

@@ -1,7 +1,7 @@
-﻿using HealthCore.Application.Features.Appointment.Commands.CreateAppointment;
-using HealthCore.Application.Features.Appointment.Commands.UpdateAppointment;
-using HealthCore.Application.Features.Appointment.Queries.GetAppointmentsByDate;
-using HealthCore.Application.Features.Appointment.Queries.GetAppointmentsByDoctor;
+﻿using HealthCore.Application.Features.Appointments.Commands.CreateAppointment;
+using HealthCore.Application.Features.Appointments.Commands.UpdateAppointment;
+using HealthCore.Application.Features.Appointments.Queries.GetAppointmentsByDate;
+using HealthCore.Application.Features.Appointments.Queries.GetAppointmentsByDoctor;
 using HealthCore.Application.Features.Appointments.Commands.ChangeAppointmentStatus;
 using HealthCore.Application.Features.Appointments.DTOs;
 using HealthCore.Application.Features.Appointments.Queries.GetAllAppointments;
@@ -67,6 +67,7 @@ public class AppointmentsController : ControllerBase
         return Ok(result);
     }
 
+    [Authorize(Roles = "Administrator,Receptionist,Doctor")]
     [HttpPatch("{id:guid}/status")]
     public async Task<IActionResult> ChangeStatus(Guid id, [FromBody] AppointmentStatus newStatus)
     {

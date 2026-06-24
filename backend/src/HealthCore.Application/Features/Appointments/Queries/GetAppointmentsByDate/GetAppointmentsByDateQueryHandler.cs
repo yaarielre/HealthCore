@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using HealthCore.Application.Features.Appointments.DTOs;
-using HealthCore.Application.Features.Appointment.Queries.GetAppointmentsByDate;
+using HealthCore.Application.Features.Appointments.Queries.GetAppointmentsByDate;
 using HealthCore.Domain.Interfaces;
 using MediatR;
 

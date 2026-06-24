@@ -1,15 +1,18 @@
 using MediatR;
 using HealthCore.Domain.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace HealthCore.Application.Features.Users.Commands.ChangePassword;
 
 public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<ChangePasswordCommandHandler> _logger;
 
-    public ChangePasswordCommandHandler(IUnitOfWork unitOfWork)
+    public ChangePasswordCommandHandler(IUnitOfWork unitOfWork, ILogger<ChangePasswordCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
@@ -22,5 +25,7 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
 
         await _unitOfWork.Users.UpdateAsync(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Contraseña cambiada para usuario {UserId}", request.Id);
     }
 }

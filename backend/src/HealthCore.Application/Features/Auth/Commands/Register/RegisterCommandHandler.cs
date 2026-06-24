@@ -6,6 +6,7 @@ using HealthCore.Domain.Entities;
 using HealthCore.Domain.Enums;
 using Microsoft.Extensions.Options;
 using HealthCore.Application.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace HealthCore.Application.Features.Auth.Commands.Register;
 
@@ -14,12 +15,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtService _jwtService;
     private readonly JwtSettings _settings;
+    private readonly ILogger<RegisterCommandHandler> _logger;
 
-    public RegisterCommandHandler(IUnitOfWork unitOfWork, IJwtService jwtService, IOptions<JwtSettings> settings)
+    public RegisterCommandHandler(IUnitOfWork unitOfWork, IJwtService jwtService, IOptions<JwtSettings> settings, ILogger<RegisterCommandHandler> logger)
     {
         _unitOfWork = unitOfWork;
         _jwtService = jwtService;
         _settings = settings.Value;
+        _logger = logger;
     }
 
     public async Task<AuthResponseDto> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -44,6 +47,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
         await _unitOfWork.Users.AddAsync(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Usuario registrado: {Email} ({Role})", user.Email, user.Role);
 
         var token = _jwtService.GenerateToken(user);
 

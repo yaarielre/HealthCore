@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HealthCore.API.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Administrator")]
 [ApiController]
 [Route("api/[controller]")]
 public class SpecialtiesController : ControllerBase

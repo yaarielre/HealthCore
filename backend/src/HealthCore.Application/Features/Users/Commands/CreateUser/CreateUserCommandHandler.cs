@@ -1,6 +1,6 @@
 using AutoMapper;
 using HealthCore.Application.Features.Users.DTOs;
-using HealthCore.Application.Interfaces;
+using HealthCore.Domain.Interfaces;
 using HealthCore.Domain.Entities;
 using HealthCore.Domain.Enums;
 using MediatR;

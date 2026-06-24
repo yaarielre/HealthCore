@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using HealthCore.Application.Features.Patients.DTOs;
-using HealthCore.Application.Interfaces;
+using HealthCore.Domain.Interfaces;
 
 namespace HealthCore.Application.Features.Patients.Queries.GetAllPatients;
 

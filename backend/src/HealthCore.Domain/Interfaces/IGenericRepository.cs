@@ -1,4 +1,4 @@
-﻿namespace HealthCore.Application.Interfaces;
+﻿namespace HealthCore.Domain.Interfaces;
 
 public interface IGenericRepository<T> where T : class
 {

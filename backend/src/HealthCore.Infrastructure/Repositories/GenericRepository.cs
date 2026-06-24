@@ -1,4 +1,4 @@
-﻿using HealthCore.Application.Interfaces;
+﻿using HealthCore.Domain.Interfaces;
 using HealthCore.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using HealthCore.Application.Features.Appointment.Commands.CreateAppointment;
 using HealthCore.Application.Features.Appointments.DTOs;
-using HealthCore.Application.Interfaces;
+using HealthCore.Domain.Interfaces;
 using HealthCore.Domain.Enums;
 using AppointmentEntity = HealthCore.Domain.Entities.Appointment;
 using MediatR;

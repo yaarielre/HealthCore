@@ -1,7 +1,6 @@
 ﻿using HealthCore.Domain.Entities;
-using HealthCore.Domain.Enums;
 
-namespace HealthCore.Application.Interfaces;
+namespace HealthCore.Domain.Interfaces;
 
 public interface IAppointmentRepository : IGenericRepository<Appointment>
 {

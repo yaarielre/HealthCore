@@ -1,8 +1,7 @@
-
 using HealthCore.Domain.Entities;
 using HealthCore.Domain.Enums;
 
-namespace HealthCore.Application.Interfaces;
+namespace HealthCore.Domain.Interfaces;
 public interface IUserRepository : IGenericRepository<User>
 {
     Task<User?> GetByEmailAsync(string email);

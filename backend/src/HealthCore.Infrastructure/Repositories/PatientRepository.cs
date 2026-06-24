@@ -1,5 +1,5 @@
-﻿using HealthCore.Application.Interfaces;
-using HealthCore.Domain.Entities;
+﻿using HealthCore.Domain.Entities;
+using HealthCore.Domain.Interfaces;
 using HealthCore.Infrastructure.Persistence;
 
 namespace HealthCore.Infrastructure.Repositories;

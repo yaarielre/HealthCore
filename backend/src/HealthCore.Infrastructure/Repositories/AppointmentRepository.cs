@@ -1,4 +1,4 @@
-﻿using HealthCore.Application.Interfaces;
+﻿using HealthCore.Domain.Interfaces;
 using HealthCore.Domain.Entities;
 using HealthCore.Domain.Enums;
 using HealthCore.Infrastructure.Persistence;

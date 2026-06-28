@@ -21,7 +21,7 @@ public class ChangeUserStatusCommandHandler : IRequestHandler<ChangeUserStatusCo
             ?? throw new KeyNotFoundException($"Usuario con Id '{request.Id}' no encontrado.");
 
         user.Status = request.NewStatus;
-        user.UpdateAt = DateTime.UtcNow;
+        user.UpdatedAt = DateTime.UtcNow;
 
         await _unitOfWork.Users.UpdateAsync(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

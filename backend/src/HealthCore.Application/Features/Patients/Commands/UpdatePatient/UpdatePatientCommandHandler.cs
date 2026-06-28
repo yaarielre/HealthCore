@@ -24,7 +24,7 @@ public class UpdatePatientCommandHandler : IRequestHandler<UpdatePatientCommand,
             ?? throw new KeyNotFoundException($"Patient with id {request.Id} not found");
 
         _mapper.Map(request.Dto, patient);
-        patient.UpdateAt = DateTime.UtcNow;
+        patient.UpdatedAt = DateTime.UtcNow;
 
         await _repository.UpdateAsync(patient);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

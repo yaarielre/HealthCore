@@ -70,7 +70,7 @@ public class UsersController : ControllerBase
     [HttpPatch("{id:guid}/password")]
     public async Task<IActionResult> ChangePassword(Guid id, [FromBody] ChangePasswordDto dto)
     {
-        await _mediator.Send(new ChangePasswordCommand(id, dto.NewPassword));
+        await _mediator.Send(new ChangePasswordCommand(id, dto.CurrentPassword, dto.NewPassword));
         return Ok();
     }
 }

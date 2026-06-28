@@ -32,12 +32,12 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.HasIndex(a => a.PatientId);
 
         builder.HasOne(a => a.Doctor)
-            .WithMany()
+            .WithMany(d => d.Appointments)
             .HasForeignKey(a => a.DoctorId)
             .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(a => a.Patient)
-            .WithMany()
+            .WithMany(p => p.Appointments)
             .HasForeignKey(a => a.PatientId)
             .OnDelete(DeleteBehavior.Restrict);
     }

@@ -20,8 +20,11 @@ public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordComman
         var user = await _unitOfWork.Users.GetByIdAsync(request.Id)
             ?? throw new KeyNotFoundException($"Usuario con Id '{request.Id}' no encontrado.");
 
+        if (!BCrypt.Net.BCrypt.Verify(request.CurrentPassword, user.PasswordHash))
+            throw new UnauthorizedAccessException("La contraseña actual no es correcta.");
+
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
-        user.UpdateAt = DateTime.UtcNow;
+        user.UpdatedAt = DateTime.UtcNow;
 
         await _unitOfWork.Users.UpdateAsync(user);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

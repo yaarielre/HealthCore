@@ -18,7 +18,7 @@ public class GetAllPatientsQueryHandler : IRequestHandler<GetAllPatientsQuery, I
 
     public async Task<IEnumerable<PatientDto>> Handle(GetAllPatientsQuery request, CancellationToken cancellationToken)
     {
-        var patients = await _repository.GetAllAsync();
+        var patients = await _repository.GetAllWithPaginationAsync(request.Page, request.PageSize);
         return _mapper.Map<IEnumerable<PatientDto>>(patients);
     }
 }

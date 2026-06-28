@@ -24,13 +24,17 @@ public class CreatePatientCommandHandler : IRequestHandler<CreatePatientCommand,
 
     public async Task<PatientDto> Handle(CreatePatientCommand request, CancellationToken cancellationToken)
     {
+        var idNumberExists = await _repository.ExistsByIdNumberAsync(request.Dto.IdNumber);
+        if (idNumberExists)
+            throw new InvalidOperationException($"Ya existe un paciente con la cédula {request.Dto.IdNumber}");
+
         var patient = _mapper.Map<Patient>(request.Dto);
         patient.Id = Guid.NewGuid();
 
         await _repository.AddAsync(patient);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        _logger.LogInformation("Paciente creado: {FirstName} {LastName} ({Cedula})", patient.FirstName, patient.LastName, patient.Cedula);
+        _logger.LogInformation("Paciente creado: {FirstName} {LastName} ({IdNumber})", patient.FirstName, patient.LastName, patient.IdNumber);
         return _mapper.Map<PatientDto>(patient);
     }
 }

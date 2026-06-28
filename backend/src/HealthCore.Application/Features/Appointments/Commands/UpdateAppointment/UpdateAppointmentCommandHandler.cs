@@ -33,7 +33,7 @@ public class UpdateAppointmentCommandHandler : IRequestHandler<UpdateAppointment
         appointment.AppointmentDate = request.Dto.AppointmentDate;
         appointment.Reason = request.Dto.Reason;
         appointment.Notes = request.Dto.Notes;
-        appointment.UpdateAt = DateTime.UtcNow;
+        appointment.UpdatedAt = DateTime.UtcNow;
 
         await _unitOfWork.Appointments.UpdateAsync(appointment);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

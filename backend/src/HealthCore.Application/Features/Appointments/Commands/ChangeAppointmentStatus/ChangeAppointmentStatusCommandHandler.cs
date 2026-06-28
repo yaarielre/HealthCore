@@ -18,7 +18,7 @@ public class ChangeAppointmentStatusCommandHandler : IRequestHandler<ChangeAppoi
             ?? throw new KeyNotFoundException($"Cita con Id '{request.Id}' no encontrada.");
 
         appointment.Status = request.NewStatus;
-        appointment.UpdateAt = DateTime.UtcNow;
+        appointment.UpdatedAt = DateTime.UtcNow;
 
         await _unitOfWork.Appointments.UpdateAsync(appointment);
         await _unitOfWork.SaveChangesAsync(cancellationToken);

@@ -14,4 +14,6 @@ public class Doctor : BaseEntity
     public Specialty Specialty { get; set; } = null!;
     public User? User { get; set; }
     public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+    public ICollection<MedicalConsultation> MedicalConsultations { get; set; } = new List<MedicalConsultation>();
+    public ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
 }

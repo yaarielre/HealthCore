@@ -14,4 +14,5 @@ public class Appointment : BaseEntity
 
     public Patient Patient { get; set; } = null!;
     public Doctor Doctor { get; set; } = null!;
+    public MedicalConsultation? MedicalConsultation { get; set; }
 }

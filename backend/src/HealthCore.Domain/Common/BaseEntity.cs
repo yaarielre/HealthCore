@@ -5,7 +5,7 @@
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public DateTime? UpdateAt { get; set; }
+    public DateTime? UpdatedAt { get; set; }
     
 }
 

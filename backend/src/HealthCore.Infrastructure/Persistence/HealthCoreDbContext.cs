@@ -23,11 +23,12 @@ public class HealthCoreDbContext : DbContext
     public DbSet<Specialty> Specialties => Set<Specialty>();
 
     public DbSet<Appointment> Appointments => Set<Appointment>();
+    public DbSet<MedicalConsultation> MedicalConsultations => Set<MedicalConsultation>();
+    public DbSet<VitalSign> VitalSigns => Set<VitalSign>();
+    public DbSet<Prescription> Prescriptions => Set<Prescription>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(HealthCoreDbContext).Assembly);
-
-        modelBuilder.Entity<Patient>().HasQueryFilter(p => !p.IsDeleted);
     }
 }

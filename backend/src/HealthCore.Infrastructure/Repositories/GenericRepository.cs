@@ -26,7 +26,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public Task UpdateAsync(T entity)
     {
-        _dbSet.Update(entity);
+        var entry = _context.Entry(entity);
+        if (entry.State == EntityState.Detached)
+            _dbSet.Update(entity);
         return Task.CompletedTask;
     }
 

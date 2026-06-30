@@ -48,3 +48,15 @@ public record CreateVitalSignDto(
     int? HeartRate,
     int? OxygenSaturation
 );
+
+public record UpdateMedicalConsultationDto(
+    Guid DoctorId,
+    Guid? AppointmentId,
+    string ReasonForVisit,
+    string? Symptoms,
+    string? Diagnosis,
+    string? Treatment,
+    string? Observations,
+    string? InternalNotes,
+    CreateVitalSignDto? VitalSigns
+);

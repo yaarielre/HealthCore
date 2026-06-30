@@ -16,5 +16,16 @@ public class MedicalConsultationMappingProfile : Profile
                 src.Patient != null ? $"{src.Patient.FirstName} {src.Patient.LastName}" : string.Empty))
             .ForCtorParam(nameof(MedicalConsultationDto.DoctorName), opt => opt.MapFrom(src =>
                 src.Doctor != null ? $"{src.Doctor.FirstName} {src.Doctor.LastName}" : string.Empty));
+
+        CreateMap<UpdateMedicalConsultationDto, ConsultationEntity>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.PatientId, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.Patient, opt => opt.Ignore())
+            .ForMember(dest => dest.Doctor, opt => opt.Ignore())
+            .ForMember(dest => dest.Appointment, opt => opt.Ignore())
+            .ForMember(dest => dest.VitalSigns, opt => opt.Ignore())
+            .ForMember(dest => dest.Prescriptions, opt => opt.Ignore());
     }
 }

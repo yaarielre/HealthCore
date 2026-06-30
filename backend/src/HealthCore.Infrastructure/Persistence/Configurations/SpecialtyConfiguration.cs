@@ -20,5 +20,8 @@ public class SpecialtyConfiguration : IEntityTypeConfiguration<Specialty>
             .HasMaxLength(300);
 
         builder.HasIndex(s => s.Name).IsUnique();
+
+        builder.Property(s => s.IsActive)
+            .HasDefaultValue(true);
     }
 }

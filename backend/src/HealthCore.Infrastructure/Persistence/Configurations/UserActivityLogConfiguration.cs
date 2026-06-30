@@ -29,6 +29,7 @@ public class UserActivityLogConfiguration : IEntityTypeConfiguration<UserActivit
         builder.HasIndex(al => al.UserId);
         builder.HasIndex(al => al.Action);
         builder.HasIndex(al => al.Module);
+        builder.HasIndex(al => new { al.UserId, al.CreatedAt }).IsDescending(false, true);
 
         builder.HasOne(al => al.User)
             .WithMany(u => u.ActivityLogs)

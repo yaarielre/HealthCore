@@ -1,4 +1,6 @@
 using HealthCore.Application.Features.Prescriptions.Commands.CreatePrescription;
+using HealthCore.Application.Features.Prescriptions.Commands.UpdatePrescription;
+using HealthCore.Application.Features.Prescriptions.Commands.DeletePrescription;
 using HealthCore.Application.Features.Prescriptions.DTOs;
 using HealthCore.Application.Features.Prescriptions.Queries.GetAllPrescriptions;
 using HealthCore.Application.Features.Prescriptions.Queries.GetPrescriptionById;
@@ -51,6 +53,22 @@ public class PrescriptionsController : ControllerBase
     {
         var result = await _mediator.Send(new CreatePrescriptionCommand(dto));
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
+
+    [Authorize(Roles = "Administrator,Doctor")]
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdatePrescriptionDto dto)
+    {
+        var result = await _mediator.Send(new UpdatePrescriptionCommand(id, dto));
+        return Ok(result);
+    }
+
+    [Authorize(Roles = "Administrator")]
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await _mediator.Send(new DeletePrescriptionCommand(id));
+        return result ? NoContent() : NotFound();
     }
 
     [Authorize(Roles = "Administrator,Doctor")]

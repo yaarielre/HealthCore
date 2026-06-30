@@ -63,6 +63,10 @@ namespace HealthCore.Infrastructure.Migrations
 
                     b.HasIndex("PatientId");
 
+                    b.HasIndex("DoctorId", "AppointmentDate");
+
+                    b.HasIndex("PatientId", "AppointmentDate");
+
                     b.ToTable("Appointments", (string)null);
                 });
 
@@ -107,6 +111,255 @@ namespace HealthCore.Infrastructure.Migrations
                     b.HasIndex("SpecialtyId");
 
                     b.ToTable("Doctors", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Immunization", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdministeredBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("ApplicationDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("BatchNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DoseNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<DateTime?>("NextDoseDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("VaccineName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Immunizations", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.InsuranceClaim", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal?>("ApprovedAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("ClaimAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ClaimNumber")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FiledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InsuranceCompany")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PolicyNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("InsuranceClaims", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Invoice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("BalanceDue")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<DateTime?>("CancelledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("DiscountAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<DateTime>("DueDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("InvoiceDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("InvoiceNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("IssuedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<decimal>("PaidAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(2);
+
+                    b.Property<decimal>("SubTotal")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<decimal>("TaxAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<decimal>("TotalAmount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(18,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceDate");
+
+                    b.HasIndex("InvoiceNumber")
+                        .IsUnique();
+
+                    b.HasIndex("IssuedById");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("Invoices", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.InvoiceItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal>("DiscountPercent")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(5,2)")
+                        .HasDefaultValue(0m);
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("OrderItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("OrderItemId");
+
+                    b.ToTable("InvoiceItems", (string)null);
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Entities.MedicalConsultation", b =>
@@ -161,11 +414,361 @@ namespace HealthCore.Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[AppointmentId] IS NOT NULL");
 
+                    b.HasIndex("CreatedAt")
+                        .IsDescending();
+
                     b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
+                    b.HasIndex("PatientId", "CreatedAt")
+                        .IsDescending(false, true);
+
                     b.ToTable("MedicalConsultations", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.MedicalHistoryItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Category")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Details")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RecordedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("RecordedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Severity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Category");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("RecordedById");
+
+                    b.ToTable("MedicalHistoryItems", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.MedicalImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BodyPart")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ContentType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<long>("FileSizeBytes")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasDefaultValue(0L);
+
+                    b.Property<string>("ImageType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Interpretation")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<Guid?>("InterpretedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("MedicalConsultationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("OrderItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("TakenAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InterpretedById");
+
+                    b.HasIndex("MedicalConsultationId");
+
+                    b.HasIndex("OrderItemId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("MedicalImages", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.MedicalRecord", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Allergies")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int?>("BloodType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmergencyContactName")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("EmergencyContactPhone")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("RecordNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PatientId")
+                        .IsUnique();
+
+                    b.HasIndex("RecordNumber")
+                        .IsUnique();
+
+                    b.ToTable("MedicalRecords", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CancelledAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CompletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("DoctorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("MedicalConsultationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid>("OrderTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("OrderedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PatientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Priority")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("MedicalConsultationId");
+
+                    b.HasIndex("OrderNumber")
+                        .IsUnique();
+
+                    b.HasIndex("OrderTypeId");
+
+                    b.HasIndex("PatientId");
+
+                    b.HasIndex("Status");
+
+                    b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsCompleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("ItemName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<string>("ResultUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime?>("ResultedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ResultedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Results")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ResultedBy");
+
+                    b.ToTable("OrderItems", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.OrderType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderTypes", (string)null);
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Entities.PasswordResetToken", b =>
@@ -201,6 +804,8 @@ namespace HealthCore.Infrastructure.Migrations
                     b.HasIndex("Token");
 
                     b.HasIndex("UserId");
+
+                    b.HasIndex("UserId", "ExpiresAt");
 
                     b.ToTable("PasswordResetTokens", (string)null);
                 });
@@ -286,7 +891,55 @@ namespace HealthCore.Infrastructure.Migrations
 
                     b.HasIndex("Phone");
 
+                    b.HasIndex("FirstName", "LastName");
+
                     b.ToTable("Patients", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Payment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("InvoiceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ReceivedById")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ReferenceNumber")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("PaymentDate");
+
+                    b.HasIndex("ReceivedById");
+
+                    b.ToTable("Payments", (string)null);
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Entities.Prescription", b =>
@@ -359,7 +1012,9 @@ namespace HealthCore.Infrastructure.Migrations
                         .HasColumnType("nvarchar(300)");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -375,6 +1030,56 @@ namespace HealthCore.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Specialties", (string)null);
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.SystemConfiguration", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ConfigKey")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ConfigValue")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsEncrypted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Category");
+
+                    b.HasIndex("Category", "ConfigKey")
+                        .IsUnique();
+
+                    b.ToTable("SystemConfigurations", (string)null);
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Entities.User", b =>
@@ -488,6 +1193,9 @@ namespace HealthCore.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
+                    b.HasIndex("UserId", "CreatedAt")
+                        .IsDescending(false, true);
+
                     b.ToTable("UserActivityLogs", (string)null);
                 });
 
@@ -562,6 +1270,73 @@ namespace HealthCore.Infrastructure.Migrations
                     b.Navigation("Specialty");
                 });
 
+            modelBuilder.Entity("HealthCore.Domain.Entities.Immunization", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.InsuranceClaim", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.Invoice", "Invoice")
+                        .WithMany("InsuranceClaims")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HealthCore.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Invoice", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.User", "IssuedBy")
+                        .WithMany()
+                        .HasForeignKey("IssuedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HealthCore.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("IssuedBy");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.InvoiceItem", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.Invoice", "Invoice")
+                        .WithMany("InvoiceItems")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealthCore.Domain.Entities.OrderItem", "OrderItem")
+                        .WithMany()
+                        .HasForeignKey("OrderItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("OrderItem");
+                });
+
             modelBuilder.Entity("HealthCore.Domain.Entities.MedicalConsultation", b =>
                 {
                     b.HasOne("HealthCore.Domain.Entities.Appointment", "Appointment")
@@ -588,6 +1363,120 @@ namespace HealthCore.Infrastructure.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("HealthCore.Domain.Entities.MedicalHistoryItem", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealthCore.Domain.Entities.User", "RecordedBy")
+                        .WithMany()
+                        .HasForeignKey("RecordedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("RecordedBy");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.MedicalImage", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.User", "InterpretedBy")
+                        .WithMany()
+                        .HasForeignKey("InterpretedById")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("HealthCore.Domain.Entities.MedicalConsultation", "MedicalConsultation")
+                        .WithMany()
+                        .HasForeignKey("MedicalConsultationId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("HealthCore.Domain.Entities.OrderItem", "OrderItem")
+                        .WithMany()
+                        .HasForeignKey("OrderItemId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("HealthCore.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InterpretedBy");
+
+                    b.Navigation("MedicalConsultation");
+
+                    b.Navigation("OrderItem");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.MedicalRecord", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.Patient", "Patient")
+                        .WithOne()
+                        .HasForeignKey("HealthCore.Domain.Entities.MedicalRecord", "PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Order", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HealthCore.Domain.Entities.MedicalConsultation", "MedicalConsultation")
+                        .WithMany()
+                        .HasForeignKey("MedicalConsultationId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("HealthCore.Domain.Entities.OrderType", "OrderType")
+                        .WithMany()
+                        .HasForeignKey("OrderTypeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HealthCore.Domain.Entities.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("MedicalConsultation");
+
+                    b.Navigation("OrderType");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.OrderItem", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HealthCore.Domain.Entities.User", "ResultedByUser")
+                        .WithMany()
+                        .HasForeignKey("ResultedBy")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Order");
+
+                    b.Navigation("ResultedByUser");
+                });
+
             modelBuilder.Entity("HealthCore.Domain.Entities.PasswordResetToken", b =>
                 {
                     b.HasOne("HealthCore.Domain.Entities.User", "User")
@@ -597,6 +1486,25 @@ namespace HealthCore.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Payment", b =>
+                {
+                    b.HasOne("HealthCore.Domain.Entities.Invoice", "Invoice")
+                        .WithMany("Payments")
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HealthCore.Domain.Entities.User", "ReceivedBy")
+                        .WithMany()
+                        .HasForeignKey("ReceivedById")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("ReceivedBy");
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Entities.Prescription", b =>
@@ -674,11 +1582,25 @@ namespace HealthCore.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("HealthCore.Domain.Entities.Invoice", b =>
+                {
+                    b.Navigation("InsuranceClaims");
+
+                    b.Navigation("InvoiceItems");
+
+                    b.Navigation("Payments");
+                });
+
             modelBuilder.Entity("HealthCore.Domain.Entities.MedicalConsultation", b =>
                 {
                     b.Navigation("Prescriptions");
 
                     b.Navigation("VitalSigns");
+                });
+
+            modelBuilder.Entity("HealthCore.Domain.Entities.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("HealthCore.Domain.Entities.Patient", b =>

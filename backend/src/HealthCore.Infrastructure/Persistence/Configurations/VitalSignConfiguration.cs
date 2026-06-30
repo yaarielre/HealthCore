@@ -24,6 +24,10 @@ public class VitalSignConfiguration : IEntityTypeConfiguration<VitalSign>
         builder.Property(v => v.Height)
             .HasColumnType("decimal(5,2)");
 
+        builder.Property(v => v.HeartRate);
+
+        builder.Property(v => v.OxygenSaturation);
+
         builder.HasOne(v => v.MedicalConsultation)
             .WithMany(m => m.VitalSigns)
             .HasForeignKey(v => v.MedicalConsultationId)

@@ -25,6 +25,18 @@ public static class DependencyInjection
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
         services.AddScoped<IMedicalConsultationRepository, MedicalConsultationRepository>();
         services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
+        services.AddScoped<ISystemConfigurationRepository, SystemConfigurationRepository>();
+        services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();
+        services.AddScoped<IMedicalHistoryItemRepository, MedicalHistoryItemRepository>();
+        services.AddScoped<IImmunizationRepository, ImmunizationRepository>();
+        services.AddScoped<IMedicalImageRepository, MedicalImageRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+        services.AddScoped<IOrderTypeRepository, OrderTypeRepository>();
+        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+        services.AddScoped<IInvoiceItemRepository, InvoiceItemRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
+        services.AddScoped<IInsuranceClaimRepository, InsuranceClaimRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));

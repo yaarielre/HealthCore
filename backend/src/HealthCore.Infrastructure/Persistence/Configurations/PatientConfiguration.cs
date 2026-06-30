@@ -67,22 +67,8 @@ public class PatientConfiguration : IEntityTypeConfiguration<Patient>
 
         builder.HasIndex(p => p.LastName);
         builder.HasIndex(p => p.Phone);
+        builder.HasIndex(p => new { p.FirstName, p.LastName });
 
         builder.HasQueryFilter(p => !p.IsDeleted);
-
-        builder.HasMany(p => p.Appointments)
-            .WithOne(a => a.Patient)
-            .HasForeignKey(a => a.PatientId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasMany(p => p.MedicalConsultations)
-            .WithOne(m => m.Patient)
-            .HasForeignKey(m => m.PatientId)
-            .OnDelete(DeleteBehavior.Restrict);
-
-        builder.HasMany(p => p.Prescriptions)
-            .WithOne(p => p.Patient)
-            .HasForeignKey(p => p.PatientId)
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

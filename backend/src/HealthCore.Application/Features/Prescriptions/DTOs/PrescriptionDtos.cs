@@ -25,3 +25,13 @@ public record CreatePrescriptionDto(
     string Duration,
     string? Instructions
 );
+
+public record UpdatePrescriptionDto(
+    Guid DoctorId,
+    Guid MedicalConsultationId,
+    string Medication,
+    string Dosage,
+    string Frequency,
+    string Duration,
+    string? Instructions
+);

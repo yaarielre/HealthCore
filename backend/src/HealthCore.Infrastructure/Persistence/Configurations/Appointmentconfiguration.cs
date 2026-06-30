@@ -30,6 +30,8 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.HasIndex(a => a.AppointmentDate);
         builder.HasIndex(a => a.DoctorId);
         builder.HasIndex(a => a.PatientId);
+        builder.HasIndex(a => new { a.DoctorId, a.AppointmentDate });
+        builder.HasIndex(a => new { a.PatientId, a.AppointmentDate });
 
         builder.HasOne(a => a.Doctor)
             .WithMany(d => d.Appointments)

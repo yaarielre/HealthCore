@@ -1,4 +1,6 @@
 using HealthCore.Application.Features.MedicalConsultations.Commands.CreateMedicalConsultation;
+using HealthCore.Application.Features.MedicalConsultations.Commands.UpdateMedicalConsultation;
+using HealthCore.Application.Features.MedicalConsultations.Commands.DeleteMedicalConsultation;
 using HealthCore.Application.Features.MedicalConsultations.DTOs;
 using HealthCore.Application.Features.MedicalConsultations.Queries.GetAllMedicalConsultations;
 using HealthCore.Application.Features.MedicalConsultations.Queries.GetMedicalConsultationById;
@@ -48,5 +50,21 @@ public class MedicalConsultationsController : ControllerBase
     {
         var result = await _mediator.Send(new CreateMedicalConsultationCommand(dto));
         return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+    }
+
+    [Authorize(Roles = "Administrator,Doctor")]
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateMedicalConsultationDto dto)
+    {
+        var result = await _mediator.Send(new UpdateMedicalConsultationCommand(id, dto));
+        return Ok(result);
+    }
+
+    [Authorize(Roles = "Administrator")]
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        var result = await _mediator.Send(new DeleteMedicalConsultationCommand(id));
+        return result ? NoContent() : NotFound();
     }
 }

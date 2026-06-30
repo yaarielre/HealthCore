@@ -34,6 +34,8 @@ public class MedicalConsultationConfiguration : IEntityTypeConfiguration<Medical
         builder.HasIndex(m => m.PatientId);
         builder.HasIndex(m => m.DoctorId);
         builder.HasIndex(m => m.AppointmentId);
+        builder.HasIndex(m => m.CreatedAt).IsDescending();
+        builder.HasIndex(m => new { m.PatientId, m.CreatedAt }).IsDescending(false, true);
 
         builder.HasOne(m => m.Patient)
             .WithMany(p => p.MedicalConsultations)

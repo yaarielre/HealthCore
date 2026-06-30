@@ -14,6 +14,18 @@ public class UnitOfWork : IUnitOfWork
     public IAppointmentRepository Appointments { get; }
     public IMedicalConsultationRepository MedicalConsultations { get; }
     public IPrescriptionRepository Prescriptions { get; }
+    public ISystemConfigurationRepository SystemConfigurations { get; }
+    public IMedicalRecordRepository MedicalRecords { get; }
+    public IMedicalHistoryItemRepository MedicalHistoryItems { get; }
+    public IImmunizationRepository Immunizations { get; }
+    public IMedicalImageRepository MedicalImages { get; }
+    public IOrderRepository Orders { get; }
+    public IOrderItemRepository OrderItems { get; }
+    public IOrderTypeRepository OrderTypes { get; }
+    public IInvoiceRepository Invoices { get; }
+    public IInvoiceItemRepository InvoiceItems { get; }
+    public IPaymentRepository Payments { get; }
+    public IInsuranceClaimRepository InsuranceClaims { get; }
 
     public UnitOfWork(
         HealthCoreDbContext context,
@@ -23,7 +35,19 @@ public class UnitOfWork : IUnitOfWork
         IDoctorRepository doctors,
         IAppointmentRepository appointments,
         IMedicalConsultationRepository medicalConsultations,
-        IPrescriptionRepository prescriptions)
+        IPrescriptionRepository prescriptions,
+        ISystemConfigurationRepository systemConfigurations,
+        IMedicalRecordRepository medicalRecords,
+        IMedicalHistoryItemRepository medicalHistoryItems,
+        IImmunizationRepository immunizations,
+        IMedicalImageRepository medicalImages,
+        IOrderRepository orders,
+        IOrderItemRepository orderItems,
+        IOrderTypeRepository orderTypes,
+        IInvoiceRepository invoices,
+        IInvoiceItemRepository invoiceItems,
+        IPaymentRepository payments,
+        IInsuranceClaimRepository insuranceClaims)
     {
         _context = context;
 
@@ -34,6 +58,18 @@ public class UnitOfWork : IUnitOfWork
         Appointments = appointments;
         MedicalConsultations = medicalConsultations;
         Prescriptions = prescriptions;
+        SystemConfigurations = systemConfigurations;
+        MedicalRecords = medicalRecords;
+        MedicalHistoryItems = medicalHistoryItems;
+        Immunizations = immunizations;
+        MedicalImages = medicalImages;
+        Orders = orders;
+        OrderItems = orderItems;
+        OrderTypes = orderTypes;
+        Invoices = invoices;
+        InvoiceItems = invoiceItems;
+        Payments = payments;
+        InsuranceClaims = insuranceClaims;
     }
 
     public async Task<int> SaveChangesAsync(

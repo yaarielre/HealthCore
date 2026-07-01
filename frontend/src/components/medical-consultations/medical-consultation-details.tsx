@@ -150,7 +150,7 @@ export function MedicalConsultationDetails({ consultation, onClose, onEdit, user
               </p>
             </div>
             
-            {userRole !== UserRole.Patient && (
+            {(userRole === UserRole.Administrator || userRole === UserRole.Doctor) && (
               <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-6 shadow-sm">
                 <h4 className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-500 mb-3">
                   Notas Internas (Privadas)

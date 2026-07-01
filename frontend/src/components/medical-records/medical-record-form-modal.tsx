@@ -89,7 +89,7 @@ export function MedicalRecordFormModal({
                 value={formData.bloodType?.toString() || ""}
                 onChange={(e) => setFormData({ 
                   ...formData, 
-                  bloodType: e.target.value ? parseInt(e.target.value) as BloodType : null 
+                  bloodType: e.target.value ? parseInt(e.target.value) as BloodType : "" 
                 })}
                 className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm outline-none focus:border-accent"
               >

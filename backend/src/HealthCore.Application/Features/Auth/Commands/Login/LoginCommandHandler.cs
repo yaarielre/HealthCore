@@ -45,6 +45,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, AuthResponseDto
 
         return new AuthResponseDto(
             Token: token,
+            Id: user.Id,
             FullName: $"{user.FirstName} {user.LastName}",
             Email: user.Email,
             Role: user.Role,

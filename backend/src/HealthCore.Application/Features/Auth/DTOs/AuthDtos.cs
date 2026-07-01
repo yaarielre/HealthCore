@@ -1,4 +1,4 @@
-﻿using HealthCore.Domain.Enums;
+using HealthCore.Domain.Enums;
 
 namespace HealthCore.Application.Features.Auth.DTOs;
 
@@ -20,6 +20,7 @@ public record RegisterDto(
 
 public record AuthResponseDto(
     string Token,
+    Guid Id,
     string FullName,
     string Email,
     UserRole Role,

@@ -13,10 +13,10 @@ interface ChangePasswordModalProps {
 
 export function ChangePasswordModal({ passwordData, isSubmitLoading, onSubmit, onClose, onChange }: ChangePasswordModalProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
+    <div role="dialog" aria-modal="true" aria-labelledby="change-password-title" className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
       <div className="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
         <div>
-          <h3 className="text-lg font-bold text-foreground">Cambiar Contraseña</h3>
+          <h3 id="change-password-title" className="text-lg font-bold text-foreground">Cambiar Contraseña</h3>
           <p className="text-xs text-muted-foreground">
             Nueva clave para <span className="font-semibold text-foreground">{passwordData.userName}</span>.
           </p>
@@ -24,15 +24,10 @@ export function ChangePasswordModal({ passwordData, isSubmitLoading, onSubmit, o
 
         <form onSubmit={onSubmit} className="space-y-4" autoComplete="off">
           <div className="space-y-1.5">
+            <label htmlFor="newPassword" className="text-xs font-semibold text-muted-foreground">Nueva Contraseña</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <input
-                type="password" required autoComplete="new-password"
-                placeholder="Nueva contraseña..."
-                value={passwordData.newPassword}
-                onChange={(e) => onChange({ ...passwordData, newPassword: e.target.value })}
-                className="w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent"
-              />
+              <input id="newPassword" type="password" required autoComplete="new-password" placeholder="Nueva contraseña..." value={passwordData.newPassword} onChange={(e) => onChange({ ...passwordData, newPassword: e.target.value })} className="w-full rounded-xl border border-border bg-background py-2 pl-10 pr-4 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent" />
             </div>
           </div>
 

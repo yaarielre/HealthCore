@@ -6,64 +6,66 @@ import {
   Users, 
   Calendar, 
   UserCog, 
-  FileText, 
-  Settings 
+  FileText,
+  Stethoscope, 
+  Settings,
+  FolderHeart,
+  Pill,
+  Syringe,
+  FlaskConical,
+  ImageIcon
 } from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
 
 import { MenuItem } from "@/types/sidebar"
+import { UserRole } from "@/types/auth"
+import { getRoleLabel } from "@/lib/utils"
+
+const MENU_ITEMS: MenuItem[] = [
+  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "patients", label: "Pacientes", icon: Users },
+  { id: "appointments", label: "Citas Médicas", icon: Calendar },
+  { id: "staff", label: "Personal Clínico", icon: UserCog },
+  { id: "consultations", label: "Consultas", icon: Stethoscope },
+  { id: "records", label: "Historias Clínicas", icon: FolderHeart },
+  { id: "prescriptions", label: "Recetas Médicas", icon: Pill },
+  { id: "immunizations", label: "Vacunas", icon: Syringe },
+  { id: "orders", label: "Órdenes Médicas", icon: FlaskConical },
+  { id: "medical-images", label: "Imágenes Médicas", icon: ImageIcon },
+  { id: "settings", label: "Configuración", icon: Settings },
+]
 
 export function useSidebar() {
   const { user, logout } = useAuth()
   const [mobileOpen, setMobileOpen] = useState(false)
 
-  const menuItems: MenuItem[] = [
-    { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { id: "patients", label: "Pacientes", icon: Users },
-    { id: "appointments", label: "Citas Médicas", icon: Calendar },
-    { id: "staff", label: "Personal Clínico", icon: UserCog },
-    { id: "records", label: "Historiales", icon: FileText },
-    { id: "settings", label: "Configuración", icon: Settings },
-  ]
-
-  const visibleMenuItems = menuItems.filter(item => {
+  const visibleMenuItems = MENU_ITEMS.filter(item => {
     const role = user?.role
 
     switch (item.id) {
       case "dashboard":
-        return true // Todos pueden ver el dashboard
+        return true
       case "patients":
       case "appointments":
-        // Admin, Manager, Doctor, Enfermera, Recepcionista
-        return role === 1 || role === 2 || role === 3 || role === 4 || role === 5
+        return role === UserRole.Administrator || role === UserRole.Manager || 
+               role === UserRole.Doctor || role === UserRole.Nurse || 
+               role === UserRole.Receptionist
       case "records":
-        // Admin, Doctor, Enfermera (privacidad médica)
-        return role === 1 || role === 3 || role === 4
+      case "consultations":
+      case "prescriptions":
+      case "immunizations":
+      case "orders":
+      case "medical-images":
+        return role === UserRole.Administrator || role === UserRole.Doctor || 
+               role === UserRole.Nurse
       case "staff":
-        // Solo Admin y Manager
-        return role === 1 || role === 2
+        return role === UserRole.Administrator || role === UserRole.Manager
       case "settings":
-        // Solo Admin
-        return role === 1
+        return role === UserRole.Administrator
       default:
         return false
     }
   })
-
-  function getRoleLabel(roleNum?: number) {
-    if (!roleNum) return "Personal"
-    const roles: Record<number, string> = {
-      1: "Administrador",
-      2: "Administrador Clínico",
-      3: "Médico / Doctor",
-      4: "Enfermero/a",
-      5: "Recepcionista",
-      6: "Cajero/a",
-      7: "Laboratorio",
-      8: "Farmacia"
-    }
-    return roles[roleNum] || "Personal"
-  }
 
   return {
     user,

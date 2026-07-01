@@ -1,8 +1,9 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { appointmentService } from "@/services/appointmentService"
 import { patientService } from "@/services/patientService"
 import { authService } from "@/services/authService"
 import { notify } from "@/lib/notify"
+import { getErrorMessage } from "@/lib/utils"
 import { Appointment, AppointmentFormData, AppointmentStatus } from "@/types/appointment"
 import { Patient } from "@/types/patient"
 import { StaffMember } from "@/types/staff"
@@ -69,15 +70,17 @@ export function useAppointments() {
     fetchDoctors()
   }, [fetchAppointments, fetchPatients, fetchDoctors])
 
-  const filteredAppointments = appointments.filter((a) => {
-    const query = searchQuery.toLowerCase()
-    const matchesSearch =
-      a.patientName.toLowerCase().includes(query) ||
-      a.doctorName.toLowerCase().includes(query) ||
-      a.reason.toLowerCase().includes(query)
-    const matchesStatus = statusFilter === "all" || a.status === statusFilter
-    return matchesSearch && matchesStatus
-  })
+  const filteredAppointments = useMemo(() =>
+    appointments.filter((a) => {
+      const query = searchQuery.toLowerCase()
+      const matchesSearch =
+        a.patientName.toLowerCase().includes(query) ||
+        a.doctorName.toLowerCase().includes(query) ||
+        a.reason.toLowerCase().includes(query)
+      const matchesStatus = statusFilter === "all" || a.status === statusFilter
+      return matchesSearch && matchesStatus
+    }),
+  [appointments, searchQuery, statusFilter])
 
   function openCreate() {
     setFormData({ ...EMPTY_APPOINTMENT_FORM })
@@ -116,8 +119,7 @@ export function useAppointments() {
       setIsCreateOpen(false)
       fetchAppointments()
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Error al programar la cita."
-      notify.error("Error al crear cita", { description: message })
+      notify.error("Error al crear cita", { description: getErrorMessage(err, "Error al programar la cita.") })
     } finally {
       setIsSubmitLoading(false)
     }
@@ -137,8 +139,7 @@ export function useAppointments() {
       setIsEditOpen(false)
       fetchAppointments()
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Error al actualizar la cita."
-      notify.error("Error al actualizar", { description: message })
+      notify.error("Error al actualizar", { description: getErrorMessage(err, "Error al actualizar la cita.") })
     } finally {
       setIsSubmitLoading(false)
     }
@@ -154,8 +155,7 @@ export function useAppointments() {
       setSelectedAppointment(null)
       fetchAppointments()
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Error al cambiar el estado."
-      notify.error("Error al cambiar estado", { description: message })
+      notify.error("Error al cambiar estado", { description: getErrorMessage(err, "Error al cambiar el estado.") })
     } finally {
       setIsSubmitLoading(false)
     }

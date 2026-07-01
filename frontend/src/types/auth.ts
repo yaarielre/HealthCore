@@ -11,7 +11,7 @@ export enum UserRole {
 
 export interface LoginDto {
   email: string
-  password?: string
+  password: string
 }
 
 export interface RegisterDto {
@@ -19,7 +19,7 @@ export interface RegisterDto {
   lastName: string
   idNumber: string
   email: string
-  password?: string
+  password: string
   phone: string
   role: UserRole
   doctorId?: string | null
@@ -27,6 +27,7 @@ export interface RegisterDto {
 
 export interface AuthResponseDto {
   token: string
+  id: string
   fullName: string
   email: string
   role: UserRole
@@ -34,7 +35,8 @@ export interface AuthResponseDto {
 }
 
 export interface AuthUser {
+  id: string
   fullName: string
   email: string
-  role: number
+  role: UserRole
 }

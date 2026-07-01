@@ -12,10 +12,10 @@ interface DeletePatientModalProps {
 
 export function DeletePatientModal({ patient, isLoading, onClose, onConfirm }: DeletePatientModalProps) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm p-4">
+    <div role="dialog" aria-modal="true" aria-labelledby="delete-patient-title" className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm p-4">
       <div className="w-full max-w-md rounded-2xl border border-border bg-card shadow-xl shadow-black/10">
         <div className="flex items-center justify-between border-b border-border px-6 py-4">
-          <h2 className="text-base font-bold text-foreground">Eliminar Paciente</h2>
+          <h2 id="delete-patient-title" className="text-base font-bold text-foreground">Eliminar Paciente</h2>
           <button onClick={onClose} className="rounded-lg p-1.5 text-muted-foreground hover:bg-accent/10 transition-colors">
             <X className="size-5" />
           </button>

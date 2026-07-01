@@ -22,11 +22,6 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  function persist(items: AppNotification[]) {
-    setNotifications(items)
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(items))
-  }
-
   const addNotification = useCallback((n: Omit<AppNotification, "id" | "timestamp" | "read">) => {
     const item: AppNotification = {
       ...n,
@@ -34,23 +29,23 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       timestamp: Date.now(),
       read: false,
     }
-    setNotifications((prev) => {
-      const updated = [item, ...prev].slice(0, MAX_ITEMS)
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated))
-      return updated
-    })
+    setNotifications((prev) => [item, ...prev].slice(0, MAX_ITEMS))
   }, [])
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications))
+  }, [notifications])
 
   useEffect(() => {
     setNotificationHandler(addNotification)
   }, [addNotification])
 
   function markAllRead() {
-    persist(notifications.map((n) => ({ ...n, read: true })))
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })))
   }
 
   function clearAll() {
-    persist([])
+    setNotifications([])
   }
 
   const unreadCount = notifications.filter((n) => !n.read).length

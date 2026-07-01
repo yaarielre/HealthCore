@@ -1,5 +1,6 @@
 import { apiRequest } from "./api"
 
+import type { UserActivityLog } from "@/types/log"
 import { LoginDto, RegisterDto, AuthResponseDto } from "@/types/auth"
 
 export const authService = {
@@ -15,6 +16,7 @@ export const authService = {
     if (response && response.token) {
       localStorage.setItem("healthcore_token", response.token)
       localStorage.setItem("healthcore_user", JSON.stringify({
+        id: response.id,
         fullName: response.fullName,
         email: response.email,
         role: response.role
@@ -64,8 +66,8 @@ export const authService = {
     })
   },
 
-  async getLogs(): Promise<import("@/types/log").UserActivityLog[]> {
-    return await apiRequest<import("@/types/log").UserActivityLog[]>("api/Users/logs", {
+  async getLogs(): Promise<UserActivityLog[]> {
+    return await apiRequest<UserActivityLog[]>("api/Users/logs", {
       method: "GET"
     })
   },
@@ -82,7 +84,7 @@ export const authService = {
   async changeUserStatus(userId: string, status: number): Promise<void> {
     await apiRequest<void>(`api/Users/${userId}/status`, {
       method: "PATCH",
-      body: status
+      body: { Status: status }
     })
   }
 }

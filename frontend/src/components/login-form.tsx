@@ -70,12 +70,12 @@ export function LoginForm() {
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="password">Contraseña</Label>
-              <a
-                href="#"
+              <button
+                type="button"
                 className="text-sm font-medium text-accent transition-colors hover:text-accent/80"
               >
                 ¿Olvidaste tu contraseña?
-              </a>
+              </button>
             </div>
             <div className="relative">
               <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />

@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using HealthCore.Application.Features.Auth.DTOs;
 using HealthCore.Domain.Interfaces;
 using HealthCore.Application.Settings;
@@ -54,6 +54,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, AuthRespo
 
         return new AuthResponseDto(
             Token: token,
+            Id: user.Id,
             FullName: $"{user.FirstName} {user.LastName}",
             Email: user.Email,
             Role: user.Role,

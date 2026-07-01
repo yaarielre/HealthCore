@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { notify } from "@/lib/notify"
 import { authService } from "@/services/authService"
-import { LoginDto, RegisterDto, AuthUser, UserRole } from "@/types/auth"
+import { LoginDto, RegisterDto, AuthUser } from "@/types/auth"
 
 export function useAuth() {
   const [loading, setLoading] = useState(false)
@@ -11,7 +11,11 @@ export function useAuth() {
   const router = useRouter()
 
   useEffect(() => {
-    setUser(authService.getCurrentUser())
+    try {
+      setUser(authService.getCurrentUser())
+    } catch {
+      setUser(null)
+    }
   }, [])
 
   async function handleLogin(credentials: LoginDto) {
@@ -20,6 +24,7 @@ export function useAuth() {
     try {
       const response = await authService.login(credentials)
       setUser({
+        id: response.id,
         fullName: response.fullName,
         email: response.email,
         role: response.role
@@ -28,7 +33,7 @@ export function useAuth() {
         description: "Has iniciado sesión correctamente.",
       })
       
-      window.location.href = "/"
+      router.push("/")
       return true
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "Credenciales inválidas"
@@ -65,7 +70,7 @@ export function useAuth() {
     authService.logout()
     setUser(null)
     notify.info("Sesión cerrada", { description: "Has salido del sistema." })
-    window.location.href = "/"
+    router.push("/")
   }
 
   return {
@@ -78,4 +83,3 @@ export function useAuth() {
     logout: handleLogout,
   }
 }
-export { UserRole }

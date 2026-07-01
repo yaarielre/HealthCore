@@ -1,5 +1,6 @@
 "use client"
 
+import { ChevronLeft } from "lucide-react"
 import Image from "next/image"
 
 interface SidebarHeaderProps {
@@ -32,7 +33,7 @@ export function SidebarHeader({ collapsed, setCollapsed }: SidebarHeaderProps) {
         className="hidden absolute -right-3.5 top-1/2 -translate-y-1/2 z-50 size-7 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:text-foreground lg:flex shadow-md transition-all duration-200 hover:scale-105 cursor-pointer"
         aria-label={collapsed ? "Expandir menú" : "Colapsar menú"}
       >
-        {collapsed ? "→" : "←"}
+        <ChevronLeft className={`size-4 transition-transform ${collapsed ? "rotate-180" : ""}`} />
       </button>
     </div>
   )

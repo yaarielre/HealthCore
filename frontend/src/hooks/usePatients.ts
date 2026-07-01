@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useMemo } from "react"
 import { patientService } from "@/services/patientService"
 import { notify } from "@/lib/notify"
+import { getErrorMessage } from "@/lib/utils"
 import { Patient, PatientFormData } from "@/types/patient"
 
 export const EMPTY_PATIENT_FORM: PatientFormData = {
@@ -30,8 +31,7 @@ export function usePatients() {
       const data = await patientService.getAll()
       setPatients(data)
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "No se pudo obtener la lista de pacientes."
-      notify.error("Error al cargar pacientes", { description: message })
+      notify.error("Error al cargar pacientes", { description: getErrorMessage(err, "No se pudo obtener la lista de pacientes.") })
     } finally {
       setIsLoading(false)
     }
@@ -41,14 +41,16 @@ export function usePatients() {
     fetchPatients()
   }, [fetchPatients])
 
-  const filteredPatients = patients.filter((p) => {
-    const query = searchQuery.toLowerCase()
-    return (
-      `${p.firstName} ${p.lastName}`.toLowerCase().includes(query) ||
-      p.cedula.toLowerCase().includes(query) ||
-      p.phone.toLowerCase().includes(query)
-    )
-  })
+  const filteredPatients = useMemo(() =>
+    patients.filter((p) => {
+      const query = searchQuery.toLowerCase()
+      return (
+        `${p.firstName} ${p.lastName}`.toLowerCase().includes(query) ||
+        p.cedula.toLowerCase().includes(query) ||
+        p.phone.toLowerCase().includes(query)
+      )
+    }),
+  [patients, searchQuery])
 
   function openCreate() {
     setFormData({ ...EMPTY_PATIENT_FORM })
@@ -84,8 +86,7 @@ export function usePatients() {
       setIsCreateOpen(false)
       fetchPatients()
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Error al registrar el paciente."
-      notify.error("Error al registrar", { description: message })
+      notify.error("Error al registrar", { description: getErrorMessage(err, "Error al registrar el paciente.") })
     } finally {
       setIsSubmitLoading(false)
     }
@@ -108,8 +109,7 @@ export function usePatients() {
       setIsEditOpen(false)
       fetchPatients()
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Error al actualizar el paciente."
-      notify.error("Error al actualizar", { description: message })
+      notify.error("Error al actualizar", { description: getErrorMessage(err, "Error al actualizar el paciente.") })
     } finally {
       setIsSubmitLoading(false)
     }
@@ -127,8 +127,7 @@ export function usePatients() {
       setSelectedPatient(null)
       fetchPatients()
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Error al eliminar el paciente."
-      notify.error("Error al eliminar", { description: message })
+      notify.error("Error al eliminar", { description: getErrorMessage(err, "Error al eliminar el paciente.") })
     } finally {
       setIsSubmitLoading(false)
     }

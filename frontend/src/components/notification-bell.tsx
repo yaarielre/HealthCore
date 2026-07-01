@@ -68,8 +68,15 @@ export function NotificationBell() {
         setIsOpen(false)
       }
     }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") setIsOpen(false)
+    }
     document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
+    document.addEventListener("keydown", handleKeyDown)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+      document.removeEventListener("keydown", handleKeyDown)
+    }
   }, [])
 
   function handleOpen() {
@@ -81,6 +88,9 @@ export function NotificationBell() {
     <div className="relative" ref={ref}>
       <button
         onClick={handleOpen}
+        aria-label={`Notificaciones${visibleUnread > 0 ? ` (${visibleUnread} sin leer)` : ""}`}
+        aria-haspopup="dialog"
+        aria-expanded={isOpen}
         className="relative rounded-lg p-2 hover:bg-accent/10 text-foreground transition-colors"
       >
         <Bell className="size-5" />
@@ -92,7 +102,7 @@ export function NotificationBell() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-80 rounded-2xl border border-border bg-card shadow-xl shadow-black/10 z-50 flex flex-col overflow-hidden">
+        <div role="dialog" aria-label="Notificaciones" className="absolute right-0 top-full mt-2 w-80 rounded-2xl border border-border bg-card shadow-xl shadow-black/10 z-50 flex flex-col overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 border-b border-border">
             <div>
               <h3 className="text-sm font-bold text-foreground">Notificaciones</h3>

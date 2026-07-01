@@ -13,6 +13,7 @@ interface PatientFormModalProps {
 }
 
 interface FieldProps {
+  id: string
   label: string
   value: string
   type?: string
@@ -21,19 +22,11 @@ interface FieldProps {
   onChange: (value: string) => void
 }
 
-function Field({ label, value, type = "text", placeholder, disabled = false, onChange }: FieldProps) {
+function Field({ id, label, value, type = "text", placeholder, disabled = false, onChange }: FieldProps) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{label}</label>
-      <input
-        type={type}
-        value={value}
-        placeholder={placeholder}
-        disabled={disabled}
-        autoComplete="off"
-        onChange={(e) => onChange(e.target.value)}
-        className="rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/50 disabled:opacity-50"
-      />
+      <label htmlFor={id} className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">{label}</label>
+      <input id={id} type={type} value={value} placeholder={placeholder} disabled={disabled} autoComplete="off" onChange={(e) => onChange(e.target.value)} className="rounded-xl border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-accent/50 disabled:opacity-50" />
     </div>
   )
 }
@@ -48,10 +41,10 @@ export function PatientFormModal({ mode, formData, isLoading, onClose, onSubmit,
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm p-4">
+    <div role="dialog" aria-modal="true" aria-labelledby="patient-form-title" className="fixed inset-0 z-50 flex items-center justify-center bg-background/60 backdrop-blur-sm p-4">
       <div className="w-full max-w-lg rounded-2xl border border-border bg-card shadow-xl shadow-black/10">
         <div className="flex items-center justify-between border-b border-border px-6 py-4">
-          <h2 className="text-base font-bold text-foreground">{title}</h2>
+          <h2 id="patient-form-title" className="text-base font-bold text-foreground">{title}</h2>
           <button onClick={onClose} className="rounded-lg p-1.5 text-muted-foreground hover:bg-accent/10 transition-colors">
             <X className="size-5" />
           </button>
@@ -59,11 +52,12 @@ export function PatientFormModal({ mode, formData, isLoading, onClose, onSubmit,
 
         <form onSubmit={onSubmit} className="flex flex-col gap-4 p-6">
           <div className="grid grid-cols-2 gap-4">
-            <Field label="Nombre" value={formData.firstName} placeholder="ej. María" onChange={(v) => update("firstName", v)} />
-            <Field label="Apellido" value={formData.lastName} placeholder="ej. García" onChange={(v) => update("lastName", v)} />
+            <Field id="firstName" label="Nombre" value={formData.firstName} placeholder="ej. María" onChange={(v) => update("firstName", v)} />
+            <Field id="lastName" label="Apellido" value={formData.lastName} placeholder="ej. García" onChange={(v) => update("lastName", v)} />
           </div>
 
           <Field
+            id="cedula"
             label="Cédula"
             value={formData.cedula}
             placeholder="ej. 001-0000000-0"
@@ -72,6 +66,7 @@ export function PatientFormModal({ mode, formData, isLoading, onClose, onSubmit,
           />
 
           <Field
+            id="birthDate"
             label="Fecha de Nacimiento"
             type="date"
             value={formData.birthDate}
@@ -80,7 +75,7 @@ export function PatientFormModal({ mode, formData, isLoading, onClose, onSubmit,
             onChange={(v) => update("birthDate", v)}
           />
 
-          <Field label="Teléfono" value={formData.phone} placeholder="ej. 809-000-0000" onChange={(v) => update("phone", v)} />
+          <Field id="phone" label="Teléfono" value={formData.phone} placeholder="ej. 809-000-0000" onChange={(v) => update("phone", v)} />
 
           <div className="flex flex-col gap-1.5">
             <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Dirección</label>

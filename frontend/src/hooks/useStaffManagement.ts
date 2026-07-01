@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo, useCallback } from "react"
 import { notify } from "@/lib/notify"
 import { authService } from "@/services/authService"
 import { UserRole } from "@/types/auth"
+import { getRoleLabel, getErrorMessage } from "@/lib/utils"
 import { StaffMember, StaffFormData, PasswordFormData } from "@/types/staff"
 
 export const STAFF_ROLES: { value: UserRole; label: string }[] = [
@@ -14,10 +15,6 @@ export const STAFF_ROLES: { value: UserRole; label: string }[] = [
 ]
 
 export const CLINICAL_ROLES = STAFF_ROLES.map(r => r.value)
-
-export function getRoleLabel(role: number): string {
-  return STAFF_ROLES.find(r => r.value === role)?.label ?? "Personal"
-}
 
 export const EMPTY_FORM = {
   firstName: "",
@@ -47,31 +44,32 @@ export function useStaffManagement() {
     newPassword: "",
   })
 
-  async function fetchStaff() {
+  const fetchStaff = useCallback(async () => {
     setIsLoading(true)
     try {
       const allUsers = await authService.getUsers() as StaffMember[]
       setUsers(allUsers.filter((u) => CLINICAL_ROLES.includes(u.role)))
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "No se pudo obtener la lista de personal clínico."
-      notify.error("Error al cargar personal", { description: message })
+      notify.error("Error al cargar personal", { description: getErrorMessage(err, "No se pudo obtener la lista de personal clínico.") })
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [])
 
   useEffect(() => {
     fetchStaff()
-  }, [])
+  }, [fetchStaff])
 
-  const filteredStaff = users.filter((member: StaffMember) => {
-    const query = searchQuery.toLowerCase()
-    return (
-      `${member.firstName} ${member.lastName}`.toLowerCase().includes(query) ||
-      member.email.toLowerCase().includes(query) ||
-      member.idNumber.toLowerCase().includes(query)
-    )
-  })
+  const filteredStaff = useMemo(() =>
+    users.filter((member: StaffMember) => {
+      const query = searchQuery.toLowerCase()
+      return (
+        `${member.firstName} ${member.lastName}`.toLowerCase().includes(query) ||
+        member.email.toLowerCase().includes(query) ||
+        member.idNumber.toLowerCase().includes(query)
+      )
+    }),
+  [users, searchQuery])
 
   function openCreate() {
     setFormData({ ...EMPTY_FORM })
@@ -108,8 +106,7 @@ export function useStaffManagement() {
       setIsCreateOpen(false)
       fetchStaff()
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Ocurrió un error en el registro."
-      notify.error("Error al registrar", { description: message, visibleToRoles: [1, 2] })
+      notify.error("Error al registrar", { description: getErrorMessage(err, "Ocurrió un error en el registro."), visibleToRoles: [1, 2] })
     } finally {
       setIsSubmitLoading(false)
     }
@@ -127,8 +124,7 @@ export function useStaffManagement() {
       setIsPasswordOpen(false)
       setPasswordData({ userId: "", userName: "", newPassword: "" })
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "No se pudo actualizar la contraseña."
-      notify.error("Error al cambiar contraseña", { description: message, visibleToRoles: [1, 2] })
+      notify.error("Error al cambiar contraseña", { description: getErrorMessage(err, "No se pudo actualizar la contraseña."), visibleToRoles: [1, 2] })
     } finally {
       setIsSubmitLoading(false)
     }
@@ -144,8 +140,7 @@ export function useStaffManagement() {
       })
       fetchStaff()
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "No se pudo actualizar el estado de la cuenta."
-      notify.error("Error al cambiar estado", { description: message, visibleToRoles: [1, 2] })
+      notify.error("Error al cambiar estado", { description: getErrorMessage(err, "No se pudo actualizar el estado de la cuenta."), visibleToRoles: [1, 2] })
     }
   }
 

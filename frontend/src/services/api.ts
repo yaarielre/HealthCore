@@ -1,4 +1,8 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7011";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5065";
+
+export function getApiBaseUrl(): string {
+  return BASE_URL.replace(/\/$/, "")
+}
 
 interface RequestOptions extends Omit<RequestInit, "body"> {
   body?: unknown;
@@ -53,7 +57,7 @@ export async function apiRequest<T>(
     }
 
     if (response.status === 204) {
-      return {} as T;
+      return undefined as T;
     }
 
     return (await response.json()) as T;

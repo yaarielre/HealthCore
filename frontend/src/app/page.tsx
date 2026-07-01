@@ -21,6 +21,12 @@ import { PatientManagement } from "@/components/patient-management"
 import { AppointmentManagement } from "@/components/appointment-management"
 import { SettingsManagement } from "@/components/settings-management"
 import { NotificationBell } from "@/components/notification-bell"
+import { MedicalConsultationsManagement } from "@/components/medical-consultations/medical-consultations-management"
+import { MedicalRecordsManagement } from "@/components/medical-records/medical-records-management"
+import { PrescriptionsManagement } from "@/components/prescriptions/prescriptions-management"
+import { ImmunizationsManagement } from "@/components/immunizations/immunizations-management"
+import { OrdersManagement } from "@/components/orders/orders-management"
+import { MedicalImagesManagement } from "@/components/medical-images/medical-images-management"
 import { NotificationProvider } from "@/contexts/notification-context"
 import { useAuth } from "@/hooks/useAuth"
 
@@ -299,7 +305,88 @@ export default function Page() {
             <SettingsManagement />
           )}
 
-          {activeTab !== "dashboard" && activeTab !== "staff" && activeTab !== "patients" && activeTab !== "appointments" && activeTab !== "settings" && (
+          {activeTab === "records" && (
+            [1, 3, 4].includes(user?.role || 0) ? (
+              <MedicalRecordsManagement />
+            ) : (
+              <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
+                <span className="flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                  <ShieldCheck className="size-7" />
+                </span>
+                <h3 className="mt-4 font-semibold text-foreground text-base">Acceso Denegado</h3>
+                <p className="mt-2 text-sm text-muted-foreground max-w-sm">
+                  Tu rol no tiene permisos para acceder a las historias clínicas.
+                </p>
+              </div>
+            )
+          )}
+
+          {activeTab === "consultations" && (
+            [1, 3, 4].includes(user?.role || 0) ? (
+              <MedicalConsultationsManagement />
+            ) : (
+              <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
+                <span className="flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                  <ShieldCheck className="size-7" />
+                </span>
+                <h3 className="mt-4 font-semibold text-foreground text-base">Acceso Denegado</h3>
+                <p className="mt-2 text-sm text-muted-foreground max-w-sm">
+                  Solo el personal médico autorizado puede gestionar las consultas.
+                </p>
+              </div>
+            )
+          )}
+
+          {activeTab === "prescriptions" && (
+            [1, 3, 4].includes(user?.role || 0) ? (
+              <PrescriptionsManagement />
+            ) : (
+              <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
+                <span className="flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                  <ShieldCheck className="size-7" />
+                </span>
+                <h3 className="mt-4 font-semibold text-foreground text-base">Acceso Denegado</h3>
+                <p className="mt-2 text-sm text-muted-foreground max-w-sm">
+                  Solo el personal médico autorizado puede gestionar las recetas.
+                </p>
+              </div>
+            )
+          )}
+
+          {activeTab === "immunizations" && (
+            [1, 3, 4].includes(user?.role || 0) ? (
+              <ImmunizationsManagement />
+            ) : (
+              <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
+                <span className="flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive"><ShieldCheck className="size-7" /></span>
+                <h3 className="mt-4 font-semibold text-foreground text-base">Acceso Denegado</h3>
+              </div>
+            )
+          )}
+
+          {activeTab === "orders" && (
+            [1, 3, 4].includes(user?.role || 0) ? (
+              <OrdersManagement />
+            ) : (
+              <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
+                <span className="flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive"><ShieldCheck className="size-7" /></span>
+                <h3 className="mt-4 font-semibold text-foreground text-base">Acceso Denegado</h3>
+              </div>
+            )
+          )}
+
+          {activeTab === "medical-images" && (
+            [1, 3, 4].includes(user?.role || 0) ? (
+              <MedicalImagesManagement />
+            ) : (
+              <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
+                <span className="flex size-14 items-center justify-center rounded-full bg-destructive/10 text-destructive"><ShieldCheck className="size-7" /></span>
+                <h3 className="mt-4 font-semibold text-foreground text-base">Acceso Denegado</h3>
+              </div>
+            )
+          )}
+
+          {activeTab !== "dashboard" && activeTab !== "staff" && activeTab !== "patients" && activeTab !== "appointments" && activeTab !== "settings" && activeTab !== "records" && activeTab !== "consultations" && activeTab !== "prescriptions" && activeTab !== "immunizations" && activeTab !== "orders" && activeTab !== "medical-images" && (
             <div className="flex h-[60vh] flex-col items-center justify-center rounded-2xl border border-dashed border-border bg-card p-8 text-center shadow-sm">
               <span className="flex size-14 items-center justify-center rounded-full bg-accent/10 text-accent">
                 <Users className="size-7" />
